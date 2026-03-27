@@ -1,22 +1,24 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Science Portfolio API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: portfolio
+    description: Portfolio content operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +26,349 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login with username and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout
+      responses:
+        "200":
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user info
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInfo"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /portfolio/hero:
+    get:
+      operationId: getHero
+      tags: [portfolio]
+      summary: Get hero section content
+      responses:
+        "200":
+          description: Hero content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeroContent"
+    put:
+      operationId: updateHero
+      tags: [portfolio]
+      summary: Update hero section content (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HeroContent"
+      responses:
+        "200":
+          description: Updated hero content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeroContent"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /portfolio/projects:
+    get:
+      operationId: getProjects
+      tags: [portfolio]
+      summary: Get all projects
+      responses:
+        "200":
+          description: List of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      operationId: createProject
+      tags: [portfolio]
+      summary: Create a new project (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        "201":
+          description: Created project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /portfolio/projects/{id}:
+    get:
+      operationId: getProject
+      tags: [portfolio]
+      summary: Get a project by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Project details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateProject
+      tags: [portfolio]
+      summary: Update a project (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        "200":
+          description: Updated project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteProject
+      tags: [portfolio]
+      summary: Delete a project (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /portfolio/skills:
+    get:
+      operationId: getSkills
+      tags: [portfolio]
+      summary: Get skills section
+      responses:
+        "200":
+          description: Skills content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkillsContent"
+    put:
+      operationId: updateSkills
+      tags: [portfolio]
+      summary: Update skills (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SkillsContent"
+      responses:
+        "200":
+          description: Updated skills content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkillsContent"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /portfolio/closing:
+    get:
+      operationId: getClosing
+      tags: [portfolio]
+      summary: Get closing section content
+      responses:
+        "200":
+          description: Closing content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClosingContent"
+    put:
+      operationId: updateClosing
+      tags: [portfolio]
+      summary: Update closing section (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClosingContent"
+      responses:
+        "200":
+          description: Updated closing content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClosingContent"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /portfolio/settings:
+    get:
+      operationId: getSettings
+      tags: [portfolio]
+      summary: Get global portfolio settings
+      responses:
+        "200":
+          description: Settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioSettings"
+    put:
+      operationId: updateSettings
+      tags: [portfolio]
+      summary: Update global portfolio settings (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PortfolioSettings"
+      responses:
+        "200":
+          description: Updated settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioSettings"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /portfolio/career:
+    get:
+      operationId: getCareer
+      tags: [portfolio]
+      summary: Get career/experience entries
+      responses:
+        "200":
+          description: Career content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CareerContent"
+    put:
+      operationId: updateCareer
+      tags: [portfolio]
+      summary: Update career entries (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CareerContent"
+      responses:
+        "200":
+          description: Updated career content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CareerContent"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -33,4 +378,266 @@ components:
           type: string
       required:
         - status
-
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    LoginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        username:
+          type: string
+        isAdmin:
+          type: boolean
+      required:
+        - success
+        - username
+        - isAdmin
+    UserInfo:
+      type: object
+      properties:
+        username:
+          type: string
+        isAdmin:
+          type: boolean
+        isLoggedIn:
+          type: boolean
+      required:
+        - username
+        - isAdmin
+        - isLoggedIn
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+        - success
+        - message
+    HeroContent:
+      type: object
+      properties:
+        title:
+          type: string
+        subtitle:
+          type: string
+        description:
+          type: string
+        profileImageUrl:
+          type: string
+        titleFontSize:
+          type: string
+        subtitleFontSize:
+          type: string
+        descriptionFontSize:
+          type: string
+      required:
+        - title
+        - subtitle
+        - description
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        summary:
+          type: string
+        category:
+          type: string
+        sortOrder:
+          type: integer
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectSection"
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectImage"
+        tags:
+          type: array
+          items:
+            type: string
+        titleFontSize:
+          type: string
+        summaryFontSize:
+          type: string
+      required:
+        - id
+        - title
+        - summary
+        - category
+        - sortOrder
+        - details
+        - images
+        - tags
+    ProjectInput:
+      type: object
+      properties:
+        title:
+          type: string
+        summary:
+          type: string
+        category:
+          type: string
+        sortOrder:
+          type: integer
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectSection"
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectImage"
+        tags:
+          type: array
+          items:
+            type: string
+        titleFontSize:
+          type: string
+        summaryFontSize:
+          type: string
+      required:
+        - title
+        - summary
+        - category
+        - sortOrder
+        - details
+        - images
+        - tags
+    ProjectSection:
+      type: object
+      properties:
+        heading:
+          type: string
+        items:
+          type: array
+          items:
+            type: string
+        subSections:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectSubSection"
+      required:
+        - heading
+        - items
+    ProjectSubSection:
+      type: object
+      properties:
+        title:
+          type: string
+        items:
+          type: array
+          items:
+            type: string
+      required:
+        - title
+        - items
+    ProjectImage:
+      type: object
+      properties:
+        url:
+          type: string
+        caption:
+          type: string
+        position:
+          type: string
+      required:
+        - url
+        - caption
+    SkillsContent:
+      type: object
+      properties:
+        sectionTitle:
+          type: string
+        skills:
+          type: array
+          items:
+            type: string
+        titleFontSize:
+          type: string
+      required:
+        - sectionTitle
+        - skills
+    ClosingContent:
+      type: object
+      properties:
+        text:
+          type: string
+        fontSize:
+          type: string
+      required:
+        - text
+    PortfolioSettings:
+      type: object
+      properties:
+        siteTitle:
+          type: string
+        ownerName:
+          type: string
+        baseFontSize:
+          type: string
+        accentColor:
+          type: string
+        showCareerSection:
+          type: boolean
+        showSkillsSection:
+          type: boolean
+        showClosingSection:
+          type: boolean
+      required:
+        - siteTitle
+        - ownerName
+    CareerEntry:
+      type: object
+      properties:
+        period:
+          type: string
+        company:
+          type: string
+        role:
+          type: string
+        description:
+          type: string
+        sortOrder:
+          type: integer
+      required:
+        - period
+        - company
+        - role
+        - description
+        - sortOrder
+    CareerContent:
+      type: object
+      properties:
+        sectionTitle:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/CareerEntry"
+        titleFontSize:
+          type: string
+      required:
+        - sectionTitle
+        - entries
