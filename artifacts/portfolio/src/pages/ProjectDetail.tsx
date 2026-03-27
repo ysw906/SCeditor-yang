@@ -13,9 +13,9 @@ export default function ProjectDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background text-foreground font-display text-2xl uppercase tracking-widest">
+      <div className="min-h-screen flex items-center justify-center bg-background text-foreground text-sm uppercase tracking-widest">
         <motion.div animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
-          Loading
+          Loading...
         </motion.div>
       </div>
     );
@@ -23,23 +23,22 @@ export default function ProjectDetail() {
 
   if (!project) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground font-display">
-        <h1 className="text-4xl mb-4 uppercase">Project Not Found</h1>
-        <Link href="/" className="font-sans text-sm uppercase tracking-widest underline underline-offset-4">Return Home</Link>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground">
+        <h1 className="text-2xl font-bold mb-4 uppercase">Project Not Found</h1>
+        <Link href="/" className="text-sm uppercase tracking-widest underline underline-offset-4">Return Home</Link>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-32">
-      {/* Huge Header */}
-      <div className="pt-40 pb-16 px-6 md:px-12 max-w-7xl mx-auto">
-        <motion.h1 
-          className="text-5xl md:text-8xl lg:text-9xl font-display uppercase tracking-tighter leading-[0.85] mb-8"
+      {/* Header */}
+      <div className="pt-32 pb-12 px-6 md:px-16 max-w-6xl mx-auto">
+        <motion.h1
+          className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          style={{ fontSize: project.titleFontSize }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
           {project.title}
         </motion.h1>
@@ -50,10 +49,10 @@ export default function ProjectDetail() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
         >
-          <p className="max-w-xl font-sans text-lg md:text-xl font-light leading-relaxed" style={{ fontSize: project.summaryFontSize }}>
+          <p className="max-w-xl text-sm md:text-base font-normal leading-relaxed text-muted-foreground">
             {project.summary}
           </p>
-          <div className="flex flex-wrap gap-4 text-xs font-sans font-semibold uppercase tracking-widest">
+          <div className="flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-widest">
             <span className="bg-foreground text-background px-4 py-2">{project.category}</span>
             {project.tags?.map(tag => (
               <span key={tag} className="border border-foreground/20 px-4 py-2">{tag}</span>
@@ -80,29 +79,30 @@ export default function ProjectDetail() {
       )}
 
       {/* Content Sections */}
-      <div className="max-w-4xl mx-auto px-6 md:px-12 space-y-32">
+      <div className="max-w-4xl mx-auto px-6 md:px-16 space-y-16">
         {project.details?.map((section, sIdx) => (
-          <motion.div 
+          <motion.div
             key={sIdx}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5 }}
           >
-            <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tight mb-8 pb-4 border-b border-foreground/10">{section.heading}</h2>
-            <div className="space-y-6 text-lg font-sans font-light leading-relaxed">
+            <h2 className="text-lg md:text-xl font-bold uppercase tracking-tight mb-6 pb-4 border-b border-foreground/10">{section.heading}</h2>
+            <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
               {section.items?.map((item, iIdx) => (
                 <p key={iIdx}>{item}</p>
               ))}
             </div>
 
             {section.subSections && section.subSections.length > 0 && (
-              <div className="mt-16 space-y-12 pl-4 md:pl-12 border-l border-foreground/10">
+              <div className="mt-8 space-y-8 pl-4 md:pl-8 border-l-2 border-foreground/8">
                 {section.subSections.map((sub, ssIdx) => (
                   <div key={ssIdx}>
-                    <h3 className="font-display text-2xl uppercase tracking-tight mb-4">{sub.title}</h3>
-                    <div className="space-y-4 text-base font-sans font-light leading-relaxed text-muted-foreground">
+                    <h3 className="text-sm font-bold uppercase tracking-wide mb-3">{sub.title}</h3>
+                    <div className="space-y-2 text-sm leading-relaxed text-muted-foreground">
                       {sub.items?.map((item, iIdx) => (
-                        <p key={iIdx}>{item}</p>
+                        <p key={iIdx}>— {item}</p>
                       ))}
                     </div>
                   </div>
@@ -114,32 +114,31 @@ export default function ProjectDetail() {
 
         {/* Remaining Images */}
         {project.images?.slice(1).map((img, idx) => (
-          <motion.div 
+          <motion.div
             key={idx}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-16"
           >
-            <img 
-              src={img.url} 
-              alt={img.caption} 
+            <img
+              src={img.url}
+              alt={img.caption}
               className="w-full h-auto bg-muted monochrome-image"
               style={{ objectPosition: img.position || 'center' }}
             />
             {img.caption && (
-              <p className="mt-4 text-sm font-sans text-muted-foreground uppercase tracking-widest text-center">
+              <p className="mt-3 text-xs text-muted-foreground uppercase tracking-widest text-center">
                 {img.caption}
               </p>
             )}
           </motion.div>
         ))}
       </div>
-      
-      {/* Next Project / Footer area */}
-      <div className="mt-40 border-t border-foreground/10 pt-16 text-center px-6">
-        <Link href="/" className="inline-block font-display text-4xl md:text-6xl uppercase tracking-tighter hover:text-muted-foreground transition-colors">
-          Back to Index
+
+      {/* Footer */}
+      <div className="mt-24 border-t border-foreground/10 pt-12 text-center px-6">
+        <Link href="/" className="inline-block text-sm font-semibold uppercase tracking-widest hover:opacity-50 transition-opacity">
+          ← Back to Portfolio
         </Link>
       </div>
     </div>

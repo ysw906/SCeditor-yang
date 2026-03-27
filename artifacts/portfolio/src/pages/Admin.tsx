@@ -49,7 +49,7 @@ export default function Admin() {
   
   const [activeTab, setActiveTab] = useState(TABS[0]);
 
-  if (userLoading) return <div className="p-8 font-display uppercase">Loading...</div>;
+  if (userLoading) return <div className="p-8 font-sans uppercase">Loading...</div>;
   
   if (!user?.isLoggedIn || !user?.isAdmin) {
     setLocation("/login");
@@ -67,7 +67,7 @@ export default function Admin() {
       {/* Sidebar */}
       <aside className="w-full md:w-64 border-r border-border bg-card p-6 flex flex-col justify-between">
         <div>
-          <h2 className="font-display text-2xl uppercase tracking-tighter mb-8">Admin Panel</h2>
+          <h2 className="font-sans text-2xl uppercase tracking-tighter mb-8">Admin Panel</h2>
           <nav className="space-y-1">
             {TABS.map(tab => (
               <button
@@ -91,7 +91,7 @@ export default function Admin() {
       {/* Main Content */}
       <main className="flex-1 p-6 md:p-12 overflow-y-auto">
         <div className="max-w-3xl">
-          <h1 className="font-display text-4xl uppercase tracking-tight mb-8 border-b pb-4">{activeTab} Editor</h1>
+          <h1 className="font-sans text-4xl uppercase tracking-tight mb-8 border-b pb-4">{activeTab} Editor</h1>
           
           {activeTab === 'Hero' && <HeroEditor />}
           {activeTab === 'Projects' && <ProjectsEditor />}
@@ -202,7 +202,7 @@ function ProjectsEditor() {
         {projects?.sort((a, b) => a.sortOrder - b.sortOrder).map((p, idx) => (
           <div key={p.id} className="flex items-center justify-between p-4 border bg-card">
             <div>
-              <div className="font-display text-xl uppercase tracking-tight">{p.title}</div>
+              <div className="font-sans text-xl uppercase tracking-tight">{p.title}</div>
               <div className="text-xs text-muted-foreground uppercase">{p.category} • Order: {p.sortOrder}</div>
             </div>
             <div className="space-x-2">
@@ -227,7 +227,7 @@ function ProjectForm({ initialData, onSave, onCancel, isPending }: any) {
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       <div className="flex items-center justify-between">
-        <h2 className="font-display text-2xl uppercase tracking-tighter">Editing Project</h2>
+        <h2 className="font-sans text-2xl uppercase tracking-tighter">Editing Project</h2>
         <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
       </div>
 
@@ -364,7 +364,7 @@ function SettingsEditor() {
       </div>
       
       <div className="space-y-4 p-6 border bg-card">
-        <h3 className="font-display text-lg uppercase tracking-tight">Section Visibility</h3>
+        <h3 className="font-sans text-lg uppercase tracking-tight">Section Visibility</h3>
         <label className="flex items-center space-x-3 cursor-pointer">
           <input type="checkbox" checked={form.showCareerSection} onChange={e => setForm({...form, showCareerSection: e.target.checked})} className="w-4 h-4 accent-foreground" />
           <span className="font-sans text-sm uppercase tracking-widest">Show Career Section</span>

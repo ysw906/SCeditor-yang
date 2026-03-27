@@ -48,7 +48,7 @@ export default function Login() {
         className="w-full max-w-md"
       >
         <div className="text-center mb-10">
-          <h1 className="font-display text-4xl uppercase tracking-tight mb-2">Admin Portal</h1>
+          <h1 className="font-sans text-4xl uppercase tracking-tight mb-2">Admin Portal</h1>
           <p className="font-sans text-sm text-muted-foreground uppercase tracking-widest">Sign in to edit portfolio</p>
         </div>
 
