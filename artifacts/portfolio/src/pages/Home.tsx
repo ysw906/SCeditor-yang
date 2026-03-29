@@ -11,70 +11,102 @@ import {
   useGetContact
 } from "@workspace/api-client-react";
 
-// Animated background — light sections (white bg)
+// Reusable face for 3D wireframe cube
+const CubeFace = ({ transform, size, color, opacity }: {
+  transform: string; size: number; color: string; opacity: number;
+}) => (
+  <div style={{
+    position: "absolute", width: size, height: size,
+    border: `1px solid ${color}`, opacity, transform,
+  }} />
+);
+
+// 3D wireframe spinning cube
+const WireframeCube = ({ size = 200, pos, duration = 32, delay = 0, color = "#000", opacity = 0.07 }: {
+  size?: number; pos: React.CSSProperties; duration?: number; delay?: number; color?: string; opacity?: number;
+}) => {
+  const half = size / 2;
+  return (
+    <div style={{ ...pos, position: "absolute", width: size, height: size, perspective: 900 }}>
+      <motion.div
+        style={{ width: size, height: size, transformStyle: "preserve-3d", position: "relative" }}
+        animate={{ rotateY: [0, 360], rotateX: [18, 32, 18] }}
+        transition={{
+          rotateY: { duration, repeat: Infinity, ease: "linear", delay },
+          rotateX: { duration: duration * 0.65, repeat: Infinity, ease: "easeInOut", delay },
+        }}
+      >
+        <CubeFace transform={`translateZ(${half}px)`}           size={size} color={color} opacity={opacity} />
+        <CubeFace transform={`translateZ(-${half}px)`}          size={size} color={color} opacity={opacity} />
+        <CubeFace transform={`rotateY(90deg) translateZ(${half}px)`}   size={size} color={color} opacity={opacity} />
+        <CubeFace transform={`rotateY(-90deg) translateZ(${half}px)`}  size={size} color={color} opacity={opacity} />
+        <CubeFace transform={`rotateX(90deg) translateZ(${half}px)`}   size={size} color={color} opacity={opacity} />
+        <CubeFace transform={`rotateX(-90deg) translateZ(${half}px)`}  size={size} color={color} opacity={opacity} />
+      </motion.div>
+    </div>
+  );
+};
+
+// Wireframe diamond (octahedron-ish) — 4 rhombus faces
+const WireframeDiamond = ({ size = 160, pos, duration = 24, delay = 0, color = "#000", opacity = 0.065 }: {
+  size?: number; pos: React.CSSProperties; duration?: number; delay?: number; color?: string; opacity?: number;
+}) => {
+  const s = size;
+  // Points: top, bottom, left, right (front half), then repeated for back half via rotation
+  const pts = `${s/2},0 ${s},${s/2} ${s/2},${s} 0,${s/2}`;
+  return (
+    <div style={{ ...pos, position: "absolute", width: size, height: size, perspective: 700 }}>
+      <motion.svg
+        width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none"
+        style={{ transformStyle: "preserve-3d", display: "block" }}
+        animate={{ rotateY: [0, 360], rotateX: [-15, 20, -15] }}
+        transition={{
+          rotateY: { duration, repeat: Infinity, ease: "linear", delay },
+          rotateX: { duration: duration * 0.8, repeat: Infinity, ease: "easeInOut", delay: delay + 2 },
+        }}
+      >
+        {/* Outer diamond */}
+        <polygon points={pts} stroke={color} strokeWidth="1" opacity={opacity} />
+        {/* Inner cross lines for depth */}
+        <line x1={s/2} y1={0} x2={s/2} y2={s} stroke={color} strokeWidth="0.7" opacity={opacity * 0.7} />
+        <line x1={0} y1={s/2} x2={s} y2={s/2} stroke={color} strokeWidth="0.7" opacity={opacity * 0.7} />
+        {/* Second rotated square for depth illusion */}
+        <polygon
+          points={`${s*0.25},${s*0.25} ${s*0.75},${s*0.25} ${s*0.75},${s*0.75} ${s*0.25},${s*0.75}`}
+          stroke={color} strokeWidth="0.8" opacity={opacity * 0.5}
+        />
+        {/* Corner connectors */}
+        <line x1={s/2} y1={0} x2={s*0.25} y2={s*0.25} stroke={color} strokeWidth="0.6" opacity={opacity * 0.5} />
+        <line x1={s}   y1={s/2} x2={s*0.75} y2={s*0.25} stroke={color} strokeWidth="0.6" opacity={opacity * 0.5} />
+        <line x1={s/2} y1={s} x2={s*0.75} y2={s*0.75} stroke={color} strokeWidth="0.6" opacity={opacity * 0.5} />
+        <line x1={0}   y1={s/2} x2={s*0.25} y2={s*0.75} stroke={color} strokeWidth="0.6" opacity={opacity * 0.5} />
+      </motion.svg>
+    </div>
+  );
+};
+
 const LightBg = ({ variant = 0 }: { variant?: number }) => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden="true">
-    <motion.div
-      className="absolute rounded-full border border-foreground"
-      style={{ width: 640, height: 640, top: -220, right: -180, opacity: 0.045 }}
-      animate={{ scale: [1, 1.06, 1], rotate: [0, 4, 0] }}
-      transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-    />
-    <motion.div
-      className="absolute rounded-full border border-foreground"
-      style={{ width: 380, height: 380, bottom: -100, left: -80, opacity: 0.05 }}
-      animate={{ scale: [1, 0.96, 1], x: [0, 18, 0], y: [0, -12, 0] }}
-      transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-    />
+    <WireframeCube size={280} pos={{ top: -80, right: -60 }} duration={38} delay={0}  color="#000" opacity={0.065} />
+    <WireframeDiamond size={160} pos={{ bottom: 60, left: 40 }}  duration={26} delay={5}  color="#000" opacity={0.07} />
     {variant === 0 && (
-      <motion.div
-        className="absolute rounded-full border border-foreground"
-        style={{ width: 200, height: 200, top: "38%", right: "22%", opacity: 0.035 }}
-        animate={{ y: [0, 28, 0], rotate: [0, -6, 0] }}
-        transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 7 }}
-      />
+      <WireframeCube size={140} pos={{ top: "35%", right: "20%" }} duration={28} delay={10} color="#000" opacity={0.05} />
     )}
     {variant === 1 && (
-      <motion.div
-        className="absolute rounded-full border border-foreground"
-        style={{ width: 500, height: 500, top: "10%", left: "30%", opacity: 0.03 }}
-        animate={{ scale: [1, 1.08, 1] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-      />
+      <WireframeDiamond size={220} pos={{ top: "15%", left: "25%" }} duration={32} delay={8}  color="#000" opacity={0.05} />
     )}
   </div>
 );
 
-// Animated background — dark sections (black bg)
 const DarkBg = ({ variant = 0 }: { variant?: number }) => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden="true">
-    <motion.div
-      className="absolute rounded-full border border-background"
-      style={{ width: 720, height: 720, top: -280, left: -200, opacity: 0.05 }}
-      animate={{ scale: [1, 1.05, 1], rotate: [0, -4, 0] }}
-      transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
-    />
-    <motion.div
-      className="absolute rounded-full border border-background"
-      style={{ width: 420, height: 420, bottom: -120, right: -90, opacity: 0.06 }}
-      animate={{ scale: [1, 0.95, 1], x: [0, -22, 0] }}
-      transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 5 }}
-    />
+    <WireframeCube size={320} pos={{ top: -100, left: -80 }} duration={42} delay={2}  color="#fff" opacity={0.07} />
+    <WireframeDiamond size={180} pos={{ bottom: 50, right: 60 }} duration={28} delay={7}  color="#fff" opacity={0.075} />
     {variant === 0 && (
-      <motion.div
-        className="absolute rounded-full border border-background"
-        style={{ width: 220, height: 220, top: "45%", left: "58%", opacity: 0.04 }}
-        animate={{ y: [0, -32, 0], x: [0, 16, 0] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 9 }}
-      />
+      <WireframeCube size={160} pos={{ top: "40%", right: "10%" }} duration={30} delay={14} color="#fff" opacity={0.055} />
     )}
     {variant === 1 && (
-      <motion.div
-        className="absolute rounded-full border border-background"
-        style={{ width: 300, height: 300, top: "20%", right: "15%", opacity: 0.035 }}
-        animate={{ scale: [1, 1.07, 1], rotate: [0, 5, 0] }}
-        transition={{ duration: 17, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-      />
+      <WireframeDiamond size={240} pos={{ top: "20%", right: "18%" }} duration={35} delay={6}  color="#fff" opacity={0.06} />
     )}
   </div>
 );
