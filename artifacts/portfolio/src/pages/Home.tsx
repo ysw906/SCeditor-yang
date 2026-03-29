@@ -130,10 +130,33 @@ export default function Home() {
     profileImageUrl: `/images/profile.jpg`
   };
 
-  const projects = projectsData?.length ? projectsData : [
-    { id: 1, title: "과학 교과서 개발", category: "교과서 개발", summary: "교육과정 기반 개념 위계를 설계하고 학습 흐름 중심으로 교과서를 개발한 프로젝트", images: [{ url: `/images/project-1.png`, caption: "" }], tags: [] },
-    { id: 2, title: "디지털 콘텐츠 개발", category: "디지털 콘텐츠", summary: "영상, 인터랙티브 콘텐츠, 디지털 교과서를 학습 흐름에 맞춰 설계한 프로젝트", images: [{ url: `/images/project-2.png`, caption: "" }], tags: [] },
-    { id: 3, title: "디지털화 기획 경진대회 대상", category: "수상 / 기획", summary: "사내 출판의 디지털화를 도모하기 위한 구독형 서비스 및 메타버스 플랫폼 기획안", images: [{ url: `/images/project-3.png`, caption: "" }], tags: [] },
+  const projects = Array.isArray(projectsData) && projectsData.length
+  ? projectsData
+  : [
+    {
+      id: 1,
+      title: "과학 교과서 개발",
+      category: "교과서 개발",
+      summary: "교육과정 기반 개념 위계를 설계...",
+      images: [{ url: `/images/project-1.png`, caption: "" }],
+      tags: []
+    },
+    {
+      id: 2,
+      title: "디지털 콘텐츠 개발",
+      category: "디지털 콘텐츠",
+      summary: "영상, 인터랙티브 콘텐츠...",
+      images: [{ url: `/images/project-2.png`, caption: "" }],
+      tags: []
+    },
+    {
+      id: 3,
+      title: "디지털화 기획 경진대회 대상",
+      category: "수상 / 기획",
+      summary: "구독형 서비스 및 메타버스...",
+      images: [{ url: `/images/project-3.png`, caption: "" }],
+      tags: []
+    }
   ];
 
   const career = careerData || {
@@ -303,6 +326,7 @@ export default function Home() {
             </motion.div>
 
             <div className="space-y-0">
+            {Array.isArray(career.entries) &&
               {career.entries.map((entry, idx) => (
                 <motion.div
                   key={idx}
@@ -344,6 +368,7 @@ export default function Home() {
               <span className="text-xs text-muted-foreground uppercase tracking-widest">Competencies</span>
             </motion.div>
             <div className="flex flex-wrap gap-3">
+            {Array.isArray(skills.skills) && 
               {skills.skills.map((skill, idx) => (
                 <motion.span
                   key={idx}
