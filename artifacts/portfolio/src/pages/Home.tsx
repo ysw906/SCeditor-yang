@@ -11,6 +11,74 @@ import {
   useGetContact
 } from "@workspace/api-client-react";
 
+// Animated background — light sections (white bg)
+const LightBg = ({ variant = 0 }: { variant?: number }) => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden="true">
+    <motion.div
+      className="absolute rounded-full border border-foreground"
+      style={{ width: 640, height: 640, top: -220, right: -180, opacity: 0.045 }}
+      animate={{ scale: [1, 1.06, 1], rotate: [0, 4, 0] }}
+      transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+    />
+    <motion.div
+      className="absolute rounded-full border border-foreground"
+      style={{ width: 380, height: 380, bottom: -100, left: -80, opacity: 0.05 }}
+      animate={{ scale: [1, 0.96, 1], x: [0, 18, 0], y: [0, -12, 0] }}
+      transition={{ duration: 16, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+    />
+    {variant === 0 && (
+      <motion.div
+        className="absolute rounded-full border border-foreground"
+        style={{ width: 200, height: 200, top: "38%", right: "22%", opacity: 0.035 }}
+        animate={{ y: [0, 28, 0], rotate: [0, -6, 0] }}
+        transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 7 }}
+      />
+    )}
+    {variant === 1 && (
+      <motion.div
+        className="absolute rounded-full border border-foreground"
+        style={{ width: 500, height: 500, top: "10%", left: "30%", opacity: 0.03 }}
+        animate={{ scale: [1, 1.08, 1] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+      />
+    )}
+  </div>
+);
+
+// Animated background — dark sections (black bg)
+const DarkBg = ({ variant = 0 }: { variant?: number }) => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden="true">
+    <motion.div
+      className="absolute rounded-full border border-background"
+      style={{ width: 720, height: 720, top: -280, left: -200, opacity: 0.05 }}
+      animate={{ scale: [1, 1.05, 1], rotate: [0, -4, 0] }}
+      transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+    />
+    <motion.div
+      className="absolute rounded-full border border-background"
+      style={{ width: 420, height: 420, bottom: -120, right: -90, opacity: 0.06 }}
+      animate={{ scale: [1, 0.95, 1], x: [0, -22, 0] }}
+      transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+    />
+    {variant === 0 && (
+      <motion.div
+        className="absolute rounded-full border border-background"
+        style={{ width: 220, height: 220, top: "45%", left: "58%", opacity: 0.04 }}
+        animate={{ y: [0, -32, 0], x: [0, 16, 0] }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 9 }}
+      />
+    )}
+    {variant === 1 && (
+      <motion.div
+        className="absolute rounded-full border border-background"
+        style={{ width: 300, height: 300, top: "20%", right: "15%", opacity: 0.035 }}
+        animate={{ scale: [1, 1.07, 1], rotate: [0, 5, 0] }}
+        transition={{ duration: 17, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+      />
+    )}
+  </div>
+);
+
 export default function Home() {
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
@@ -68,6 +136,7 @@ export default function Home() {
 
       {/* HERO SECTION */}
       <section className="relative min-h-screen flex items-center pt-24 pb-16 px-6 md:px-16 overflow-hidden">
+        <LightBg variant={0} />
         <div className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center relative z-10">
           {/* Text */}
           <div className="order-2 lg:order-1 lg:col-span-3">
@@ -135,8 +204,9 @@ export default function Home() {
 
       {/* PROJECTS SECTION */}
       {settings?.showCareerSection !== false && (
-        <section id="projects" className="py-24 px-6 md:px-16 bg-foreground text-background">
-          <div className="max-w-6xl mx-auto">
+        <section id="projects" className="relative overflow-hidden py-24 px-6 md:px-16 bg-foreground text-background">
+          <DarkBg variant={0} />
+          <div className="max-w-6xl mx-auto relative z-10">
             <motion.div
               className="flex items-baseline justify-between mb-16 border-b border-background/10 pb-6"
               initial={{ opacity: 0, y: 20 }}
@@ -185,8 +255,9 @@ export default function Home() {
 
       {/* CAREER TIMELINE */}
       {settings?.showCareerSection !== false && (
-        <section id="career" className="py-24 px-6 md:px-16 bg-background">
-          <div className="max-w-4xl mx-auto">
+        <section id="career" className="relative overflow-hidden py-24 px-6 md:px-16 bg-background">
+          <LightBg variant={1} />
+          <div className="max-w-4xl mx-auto relative z-10">
             <motion.div
               className="flex items-baseline justify-between mb-16 border-b border-foreground/10 pb-6"
               initial={{ opacity: 0, y: 20 }}
@@ -226,8 +297,9 @@ export default function Home() {
 
       {/* SKILLS */}
       {settings?.showSkillsSection !== false && (
-        <section id="skills" className="py-24 px-6 md:px-16 bg-foreground text-background">
-          <div className="max-w-6xl mx-auto">
+        <section id="skills" className="relative overflow-hidden py-24 px-6 md:px-16 bg-foreground text-background">
+          <DarkBg variant={1} />
+          <div className="max-w-6xl mx-auto relative z-10">
             <motion.div
               className="flex items-baseline justify-between mb-12 border-b border-background/10 pb-6"
               initial={{ opacity: 0 }}
@@ -259,13 +331,14 @@ export default function Home() {
 
       {/* CLOSING */}
       {settings?.showClosingSection !== false && (
-        <section className="py-32 px-6 md:px-16 bg-background">
+        <section className="relative overflow-hidden py-32 px-6 md:px-16 bg-background">
+          <LightBg variant={1} />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="max-w-3xl mx-auto text-center"
+            className="max-w-3xl mx-auto text-center relative z-10"
           >
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-8">Philosophy</p>
             <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed whitespace-pre-line">
@@ -276,8 +349,9 @@ export default function Home() {
       )}
 
       {/* CONTACT */}
-      <section id="contact" className="py-24 px-6 md:px-16 bg-foreground text-background">
-        <div className="max-w-4xl mx-auto">
+      <section id="contact" className="relative overflow-hidden py-24 px-6 md:px-16 bg-foreground text-background">
+        <DarkBg variant={1} />
+        <div className="max-w-4xl mx-auto relative z-10">
           <motion.div
             className="flex items-baseline justify-between mb-16 border-b border-background/10 pb-6"
             initial={{ opacity: 0, y: 20 }}
