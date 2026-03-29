@@ -327,7 +327,7 @@ export default function Home() {
 
             <div className="space-y-0">
             {Array.isArray(career.entries) &&
-              {career.entries.map((entry, idx) => (
+              career.entries.map((entry, idx) => (
                 <motion.div
                   key={idx}
                   className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8 py-8 border-b border-foreground/8 last:border-b-0"
@@ -369,7 +369,7 @@ export default function Home() {
             </motion.div>
             <div className="flex flex-wrap gap-3">
             {Array.isArray(skills.skills) && 
-              {skills.skills.map((skill, idx) => (
+              skills.skills.map((skill, idx) => (
                 <motion.span
                   key={idx}
                   className="inline-block border border-background/20 px-4 py-2 text-sm font-medium hover:bg-background hover:text-foreground transition-colors cursor-default"
