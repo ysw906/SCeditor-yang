@@ -55,7 +55,6 @@ export default function Home() {
     email: "swyang.sci@gmail.com",
     phone: "",
     location: "서울, 대한민국",
-    links: [],
     note: ""
   };
 
@@ -327,7 +326,7 @@ export default function Home() {
               )}
             </motion.div>
 
-            {/* Right: links + note */}
+            {/* Right: note */}
             <motion.div
               className="space-y-6"
               initial={{ opacity: 0, y: 15 }}
@@ -335,25 +334,6 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              {contact.links && contact.links.length > 0 && (
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-3">Links</p>
-                  <div className="space-y-2">
-                    {contact.links.map((link, idx) => (
-                      <a
-                        key={idx}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-between py-3 border-b border-background/10 group hover:opacity-60 transition-opacity"
-                      >
-                        <span className="text-sm font-semibold uppercase tracking-widest">{link.label}</span>
-                        <span className="text-xs opacity-50 group-hover:opacity-100 transition-opacity">→</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
               {contact.note && (
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-2">Note</p>
