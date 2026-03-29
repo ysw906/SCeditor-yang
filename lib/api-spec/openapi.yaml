@@ -333,6 +333,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /portfolio/contact:
+    get:
+      operationId: getContact
+      tags: [portfolio]
+      summary: Get contact section content
+      responses:
+        "200":
+          description: Contact content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactContent"
+    put:
+      operationId: updateContact
+      tags: [portfolio]
+      summary: Update contact section (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactContent"
+      responses:
+        "200":
+          description: Updated contact content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactContent"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /portfolio/career:
     get:
       operationId: getCareer
@@ -608,6 +643,34 @@ components:
       required:
         - siteTitle
         - ownerName
+    ContactContent:
+      type: object
+      properties:
+        sectionTitle:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        location:
+          type: string
+        links:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              url:
+                type: string
+            required:
+              - label
+              - url
+        note:
+          type: string
+      required:
+        - sectionTitle
+        - email
     CareerEntry:
       type: object
       properties:

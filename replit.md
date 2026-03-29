@@ -70,7 +70,7 @@ Express 5 API server. Routes include:
 
 ### `lib/db` (`@workspace/db`)
 
-Database schema includes: hero, projects, skills, closing, settings, career tables.
+Database schema includes: hero, projects, skills, closing, settings, career, contact tables.
 
 ### `lib/api-spec` (`@workspace/api-spec`)
 
@@ -81,5 +81,5 @@ OpenAPI spec for the portfolio API. Run codegen: `pnpm --filter @workspace/api-s
 - URL: `/login`
 - ID: `sample`
 - Password: `sample`
-- Features: Edit hero content, projects (CRUD), career entries, skills, closing text, site settings
+- Features: Edit hero content, projects (CRUD), career entries, skills, closing text, contact section (email, phone, location, links, note), site settings
 - Font size controls, image URL management, category/section editing

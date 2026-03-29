@@ -29,7 +29,7 @@ export default function Navbar() {
             <a href="#projects" className="hover:opacity-50 transition-opacity">Projects</a>
             <a href="#career" className="hover:opacity-50 transition-opacity">Career</a>
             <a href="#skills" className="hover:opacity-50 transition-opacity">Skills</a>
-            <Link href="/login" className="hover:opacity-50 transition-opacity">Admin</Link>
+            <a href="#contact" className="hover:opacity-50 transition-opacity">Contact</a>
           </nav>
         )}
 

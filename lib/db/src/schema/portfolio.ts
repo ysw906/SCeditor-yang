@@ -63,12 +63,24 @@ export const careerTable = pgTable("career", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const contactTable = pgTable("contact", {
+  id: serial("id").primaryKey(),
+  sectionTitle: text("section_title").notNull().default("Contact"),
+  email: text("email").notNull().default(""),
+  phone: text("phone").default(""),
+  location: text("location").default(""),
+  links: jsonb("links").notNull().default([]),
+  note: text("note").default(""),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const insertHeroSchema = createInsertSchema(heroTable).omit({ id: true, updatedAt: true });
 export const insertProjectSchema = createInsertSchema(projectsTable).omit({ id: true, updatedAt: true });
 export const insertSkillsSchema = createInsertSchema(skillsTable).omit({ id: true, updatedAt: true });
 export const insertClosingSchema = createInsertSchema(closingTable).omit({ id: true, updatedAt: true });
 export const insertSettingsSchema = createInsertSchema(settingsTable).omit({ id: true, updatedAt: true });
 export const insertCareerSchema = createInsertSchema(careerTable).omit({ id: true, updatedAt: true });
+export const insertContactSchema = createInsertSchema(contactTable).omit({ id: true, updatedAt: true });
 
 export type Hero = typeof heroTable.$inferSelect;
 export type Project = typeof projectsTable.$inferSelect;
@@ -76,3 +88,4 @@ export type Skills = typeof skillsTable.$inferSelect;
 export type Closing = typeof closingTable.$inferSelect;
 export type Settings = typeof settingsTable.$inferSelect;
 export type Career = typeof careerTable.$inferSelect;
+export type Contact = typeof contactTable.$inferSelect;

@@ -7,7 +7,8 @@ import {
   useGetCareer,
   useGetSkills,
   useGetClosing,
-  useGetSettings
+  useGetSettings,
+  useGetContact
 } from "@workspace/api-client-react";
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
   const { data: skillsData } = useGetSkills();
   const { data: closingData } = useGetClosing();
   const { data: settings } = useGetSettings();
+  const { data: contactData } = useGetContact();
 
   const hero = heroData || {
     title: "양승우",
@@ -47,6 +49,15 @@ export default function Home() {
   };
 
   const closing = closingData || { text: "학습자는 정보를 '읽는 것'보다\n'경험하는 것'에서 더 깊이 이해한다고 생각합니다.\n\n저는 과학 개념을 전달하는 것을 넘어,\n학습자가 자연스럽게 이해할 수 있는 흐름을 설계하는\n콘텐츠 기획자가 되고자 합니다." };
+
+  const contact = contactData || {
+    sectionTitle: "Contact",
+    email: "swyang.sci@gmail.com",
+    phone: "",
+    location: "서울, 대한민국",
+    links: [],
+    note: ""
+  };
 
   return (
     <div className="bg-background min-h-screen text-foreground selection:bg-foreground selection:text-background">
@@ -258,14 +269,117 @@ export default function Home() {
             className="max-w-3xl mx-auto text-center"
           >
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-8">Philosophy</p>
-            <p
-              className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed whitespace-pre-line"
-            >
+            <p className="text-lg md:text-xl lg:text-2xl font-medium leading-relaxed whitespace-pre-line">
               {closing.text}
             </p>
           </motion.div>
         </section>
       )}
+
+      {/* CONTACT */}
+      <section id="contact" className="py-24 px-6 md:px-16 bg-foreground text-background">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            className="flex items-baseline justify-between mb-16 border-b border-background/10 pb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-tight">
+              {contact.sectionTitle}
+            </h2>
+            <span className="text-xs text-muted-foreground uppercase tracking-widest">Get in Touch</span>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Left: contact info */}
+            <motion.div
+              className="space-y-6"
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              {contact.email && (
+                <div className="group">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-1">Email</p>
+                  <a
+                    href={`mailto:${contact.email}`}
+                    className="text-base md:text-lg font-medium hover:opacity-60 transition-opacity break-all"
+                  >
+                    {contact.email}
+                  </a>
+                </div>
+              )}
+              {contact.phone && (
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-1">Phone</p>
+                  <a href={`tel:${contact.phone}`} className="text-base md:text-lg font-medium hover:opacity-60 transition-opacity">
+                    {contact.phone}
+                  </a>
+                </div>
+              )}
+              {contact.location && (
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-1">Location</p>
+                  <p className="text-base md:text-lg font-medium">{contact.location}</p>
+                </div>
+              )}
+            </motion.div>
+
+            {/* Right: links + note */}
+            <motion.div
+              className="space-y-6"
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              {contact.links && contact.links.length > 0 && (
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-3">Links</p>
+                  <div className="space-y-2">
+                    {contact.links.map((link, idx) => (
+                      <a
+                        key={idx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between py-3 border-b border-background/10 group hover:opacity-60 transition-opacity"
+                      >
+                        <span className="text-sm font-semibold uppercase tracking-widest">{link.label}</span>
+                        <span className="text-xs opacity-50 group-hover:opacity-100 transition-opacity">→</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {contact.note && (
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-2">Note</p>
+                  <p className="text-sm leading-relaxed whitespace-pre-line text-muted-foreground">{contact.note}</p>
+                </div>
+              )}
+            </motion.div>
+          </div>
+
+          {/* Footer line */}
+          <motion.div
+            className="mt-20 pt-8 border-t border-background/10 flex flex-col md:flex-row items-center justify-between gap-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
+            <p className="text-xs text-muted-foreground uppercase tracking-widest">
+              © {new Date().getFullYear()} {hero.title}
+            </p>
+            <Link href="/login" className="text-xs text-muted-foreground uppercase tracking-widest hover:opacity-60 transition-opacity">
+              Admin
+            </Link>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

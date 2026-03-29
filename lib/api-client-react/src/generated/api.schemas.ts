@@ -121,3 +121,17 @@ export interface CareerContent {
   entries: CareerEntry[];
   titleFontSize?: string;
 }
+
+export interface ContactLink {
+  label: string;
+  url: string;
+}
+
+export interface ContactContent {
+  sectionTitle: string;
+  email: string;
+  phone?: string;
+  location?: string;
+  links?: ContactLink[];
+  note?: string;
+}

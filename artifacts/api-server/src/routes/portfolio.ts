@@ -2,7 +2,7 @@ import { Router, type IRouter } from "express";
 import type { RequestHandler } from "express";
 import { db } from "@workspace/db";
 import {
-  heroTable, projectsTable, skillsTable, closingTable, settingsTable, careerTable
+  heroTable, projectsTable, skillsTable, closingTable, settingsTable, careerTable, contactTable
 } from "@workspace/db";
 import { eq } from "drizzle-orm";
 
@@ -226,3 +226,32 @@ router.put("/career", requireAdmin, (async (req, res) => {
 }) as RequestHandler);
 
 export default router;
+
+router.get("/contact", (async (_req, res) => {
+  const rows = await db.select().from(contactTable).limit(1);
+  if (rows.length === 0) {
+    return res.json({
+      sectionTitle: "Contact",
+      email: "swyang.sci@gmail.com",
+      phone: "",
+      location: "서울, 대한민국",
+      links: [],
+      note: ""
+    });
+  }
+  return res.json(rows[0]);
+}) as RequestHandler);
+
+router.put("/contact", requireAdmin, (async (req, res) => {
+  const body = req.body;
+  const rows = await db.select().from(contactTable).limit(1);
+  let result;
+  if (rows.length === 0) {
+    const inserted = await db.insert(contactTable).values(body).returning();
+    result = inserted[0];
+  } else {
+    const updated = await db.update(contactTable).set({ ...body, updatedAt: new Date() }).where(eq(contactTable.id, rows[0].id)).returning();
+    result = updated[0];
+  }
+  return res.json(result);
+}) as RequestHandler);

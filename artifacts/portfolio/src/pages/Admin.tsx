@@ -6,12 +6,13 @@ import {
   useGetCareer, useUpdateCareer,
   useGetSkills, useUpdateSkills,
   useGetClosing, useUpdateClosing,
-  useGetSettings, useUpdateSettings
+  useGetSettings, useUpdateSettings,
+  useGetContact, useUpdateContact
 } from "@workspace/api-client-react";
 import { Link, useLocation } from "wouter";
 import { Button, Input, Textarea, Label } from "@/components/UI";
 
-const TABS = ['Hero', 'Projects', 'Career', 'Skills', 'Closing', 'Settings'];
+const TABS = ['Hero', 'Projects', 'Career', 'Skills', 'Closing', 'Contact', 'Settings'];
 
 const POSITION_PRESETS = [
   ["top left",    "top center",    "top right"],
@@ -437,6 +438,7 @@ export default function Admin() {
           {activeTab === "Career" && <CareerEditor />}
           {activeTab === "Skills" && <SkillsEditor />}
           {activeTab === "Closing" && <ClosingEditor />}
+          {activeTab === "Contact" && <ContactEditor />}
           {activeTab === "Settings" && <SettingsEditor />}
         </div>
       </main>
@@ -693,6 +695,106 @@ function ClosingEditor() {
         <Label>마무리 문구</Label>
         <Textarea value={form.text} onChange={e => setForm({ ...form, text: e.target.value })} className="h-32" />
       </div>
+      <Button type="submit" disabled={mutation.isPending}>{mutation.isPending ? "저장 중..." : "저장"}</Button>
+      {mutation.isSuccess && <p className="text-xs text-green-600">저장됐습니다</p>}
+    </form>
+  );
+}
+
+function ContactEditor() {
+  const { data, refetch } = useGetContact({ query: { retry: false } });
+  const mutation = useUpdateContact();
+  const [form, setForm] = useState(
+    data || { sectionTitle: "Contact", email: "", phone: "", location: "", links: [], note: "" }
+  );
+
+  useEffect(() => { if (data) setForm(data); }, [data]);
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    mutation.mutate({ data: form }, { onSuccess: () => refetch() });
+  };
+
+  const addLink = () => {
+    setForm({ ...form, links: [...(form.links || []), { label: "", url: "" }] });
+  };
+
+  const updateLink = (idx: number, field: "label" | "url", value: string) => {
+    const updated = [...(form.links || [])];
+    updated[idx] = { ...updated[idx], [field]: value };
+    setForm({ ...form, links: updated });
+  };
+
+  const removeLink = (idx: number) => {
+    setForm({ ...form, links: (form.links || []).filter((_, i) => i !== idx) });
+  };
+
+  return (
+    <form onSubmit={onSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2 md:col-span-2">
+          <Label>섹션 제목</Label>
+          <Input value={form.sectionTitle} onChange={e => setForm({ ...form, sectionTitle: e.target.value })} />
+        </div>
+        <div className="space-y-2 md:col-span-2">
+          <Label>이메일 *</Label>
+          <Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required placeholder="you@example.com" />
+        </div>
+        <div className="space-y-2">
+          <Label>전화번호 (선택)</Label>
+          <Input value={form.phone || ""} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="010-0000-0000" />
+        </div>
+        <div className="space-y-2">
+          <Label>위치 (선택)</Label>
+          <Input value={form.location || ""} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="서울, 대한민국" />
+        </div>
+        <div className="space-y-2 md:col-span-2">
+          <Label>메모 / 한 줄 소개 (선택)</Label>
+          <Textarea value={form.note || ""} onChange={e => setForm({ ...form, note: e.target.value })} placeholder="메시지를 남겨주세요..." className="h-20" />
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <Label>링크</Label>
+          <button
+            type="button"
+            onClick={addLink}
+            className="text-xs font-semibold uppercase tracking-widest px-3 py-1.5 border border-foreground hover:bg-foreground hover:text-background transition-colors"
+          >
+            + 링크 추가
+          </button>
+        </div>
+        {(form.links || []).length === 0 && (
+          <p className="text-xs text-muted-foreground">링크 없음. "+ 링크 추가"를 클릭해서 추가하세요.</p>
+        )}
+        <div className="space-y-2">
+          {(form.links || []).map((link, idx) => (
+            <div key={idx} className="flex gap-2 items-center p-3 border bg-card">
+              <Input
+                value={link.label}
+                onChange={e => updateLink(idx, "label", e.target.value)}
+                placeholder="레이블 (예: LinkedIn)"
+                className="flex-1 text-xs"
+              />
+              <Input
+                value={link.url}
+                onChange={e => updateLink(idx, "url", e.target.value)}
+                placeholder="URL (예: https://linkedin.com/in/...)"
+                className="flex-2 text-xs font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => removeLink(idx)}
+                className="text-xs px-2 py-1.5 border border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors flex-shrink-0"
+              >
+                삭제
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <Button type="submit" disabled={mutation.isPending}>{mutation.isPending ? "저장 중..." : "저장"}</Button>
       {mutation.isSuccess && <p className="text-xs text-green-600">저장됐습니다</p>}
     </form>

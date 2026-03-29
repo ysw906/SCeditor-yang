@@ -19,6 +19,7 @@ import type {
 import type {
   CareerContent,
   ClosingContent,
+  ContactContent,
   ErrorResponse,
   HealthStatus,
   HeroContent,
@@ -1543,3 +1544,138 @@ export const useUpdateCareer = <
 > => {
   return useMutation(getUpdateCareerMutationOptions(options));
 };
+
+// ==========================================
+// Contact Section
+// ==========================================
+
+export const getGetContactUrl = () => {
+  return `/api/portfolio/contact`;
+};
+
+export const getContact = async (
+  options?: RequestInit,
+): Promise<ContactContent> => {
+  return customFetch<ContactContent>(getGetContactUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetContactQueryKey = () => {
+  return [`/api/portfolio/contact`] as const;
+};
+
+export const getGetContactQueryOptions = <
+  TData = Awaited<ReturnType<typeof getContact>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getContact>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetContactQueryKey();
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getContact>>> = ({
+    signal,
+  }) => getContact({ signal, ...requestOptions });
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getContact>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetContactQueryResult = NonNullable<Awaited<ReturnType<typeof getContact>>>;
+export type GetContactQueryError = ErrorType<unknown>;
+
+export function useGetContact<
+  TData = Awaited<ReturnType<typeof getContact>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof getContact>>, TError, TData>;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetContactQueryOptions(options);
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+export const getUpdateContactUrl = () => {
+  return `/api/portfolio/contact`;
+};
+
+export const updateContact = async (
+  contactContent: ContactContent,
+  options?: RequestInit,
+): Promise<ContactContent> => {
+  return customFetch<ContactContent>(getUpdateContactUrl(), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(contactContent),
+  });
+};
+
+export const getUpdateContactMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateContact>>,
+    TError,
+    { data: BodyType<ContactContent> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateContact>>,
+  TError,
+  { data: BodyType<ContactContent> },
+  TContext
+> => {
+  const mutationKey = ["updateContact"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateContact>>,
+    { data: BodyType<ContactContent> }
+  > = (props) => {
+    const { data } = props ?? {};
+    return updateContact(data, requestOptions);
+  };
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateContactMutationResult = NonNullable<Awaited<ReturnType<typeof updateContact>>>;
+export type UpdateContactMutationBody = BodyType<ContactContent>;
+export type UpdateContactMutationError = ErrorType<ErrorResponse>;
+
+export function useUpdateContact<
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateContact>>,
+    TError,
+    { data: BodyType<ContactContent> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateContact>>,
+  TError,
+  { data: BodyType<ContactContent> },
+  TContext
+> {
+  const mutationOptions = getUpdateContactMutationOptions(options);
+  return useMutation(mutationOptions);
+}
