@@ -357,27 +357,101 @@ function HeroImageUploader({
   );
 }
 
-const JsonEditor = ({ value, onChange, label }: { value: any; onChange: (val: any) => void; label: string }) => {
-  const [text, setText] = useState(() => JSON.stringify(value, null, 2));
-  const [error, setError] = useState("");
+const StringListEditor = ({ label, value, onChange, placeholder }: {
+  label: string;
+  value: string[];
+  onChange: (val: string[]) => void;
+  placeholder?: string;
+}) => {
+  const [text, setText] = useState((value || []).join("\n"));
+  const prevValue = useRef(value);
+
+  useEffect(() => {
+    if (JSON.stringify(value) !== JSON.stringify(prevValue.current)) {
+      prevValue.current = value;
+      setText((value || []).join("\n"));
+    }
+  }, [value]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
-    try {
-      onChange(JSON.parse(e.target.value));
-      setError("");
-    } catch {
-      setError("JSON 형식 오류");
-    }
+    const newText = e.target.value;
+    setText(newText);
+    onChange(newText.split("\n").filter(s => s.trim() !== ""));
   };
 
-  useEffect(() => { setText(JSON.stringify(value, null, 2)); }, [value]);
+  return (
+    <div className="space-y-1.5">
+      <Label>{label}</Label>
+      <p className="text-xs text-muted-foreground">한 줄에 하나씩 입력하세요</p>
+      <Textarea value={text} onChange={handleChange} className="min-h-[120px]" placeholder={placeholder} />
+    </div>
+  );
+};
+
+type DetailSection = { heading: string; items: string[]; subSections?: { title: string; items: string[] }[] };
+
+const DetailSectionCard = ({ section, onChange, onRemove, index }: {
+  section: DetailSection;
+  onChange: (s: DetailSection) => void;
+  onRemove: () => void;
+  index: number;
+}) => {
+  const [itemsText, setItemsText] = useState((section.items || []).join("\n"));
+
+  const handleItemsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.target.value;
+    setItemsText(newText);
+    onChange({ ...section, items: newText.split("\n").filter(s => s.trim() !== "") });
+  };
 
   return (
-    <div className="space-y-2">
-      <Label>{label}</Label>
-      <Textarea value={text} onChange={handleChange} className="font-mono text-xs min-h-[160px]" />
-      {error && <p className="text-destructive text-xs">{error}</p>}
+    <div className="p-4 border bg-card space-y-3">
+      <div className="flex justify-between items-center">
+        <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">섹션 {index + 1}</span>
+        <button type="button" onClick={onRemove} className="text-xs px-2 py-1 border border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors">삭제</button>
+      </div>
+      <div className="space-y-1.5">
+        <Label className="text-xs">제목</Label>
+        <Input value={section.heading} onChange={e => onChange({ ...section, heading: e.target.value })} placeholder="예: 주요 성과" />
+      </div>
+      <div className="space-y-1.5">
+        <Label className="text-xs">내용 항목</Label>
+        <p className="text-[10px] text-muted-foreground">한 줄에 하나씩 입력하세요</p>
+        <Textarea value={itemsText} onChange={handleItemsChange} className="min-h-[80px] text-sm" placeholder={"예시 항목 1\n예시 항목 2"} />
+      </div>
+    </div>
+  );
+};
+
+const DetailsEditor = ({ value, onChange }: { value: DetailSection[]; onChange: (val: DetailSection[]) => void }) => {
+  const addSection = () => onChange([...(value || []), { heading: "", items: [], subSections: [] }]);
+  const removeSection = (idx: number) => onChange((value || []).filter((_, i) => i !== idx));
+  const updateSection = (idx: number, updated: DetailSection) => {
+    const arr = [...(value || [])];
+    arr[idx] = updated;
+    onChange(arr);
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <Label>상세 섹션</Label>
+        <button
+          type="button"
+          onClick={addSection}
+          className="text-xs font-semibold uppercase tracking-widest px-3 py-1.5 border border-foreground hover:bg-foreground hover:text-background transition-colors"
+        >
+          + 섹션 추가
+        </button>
+      </div>
+      {(value || []).length === 0 && (
+        <p className="text-xs text-muted-foreground">섹션 없음. "+ 섹션 추가"를 클릭해서 추가하세요.</p>
+      )}
+      <div className="space-y-2">
+        {(value || []).map((section, idx) => (
+          <DetailSectionCard key={idx} index={idx} section={section} onChange={updated => updateSection(idx, updated)} onRemove={() => removeSection(idx)} />
+        ))}
+      </div>
     </div>
   );
 };
@@ -599,7 +673,7 @@ function ProjectForm({ initialData, onSave, onCancel, isPending }: any) {
               <Input type="number" value={form.sortOrder} onChange={e => setForm({ ...form, sortOrder: parseInt(e.target.value) })} required />
             </div>
           </div>
-          <JsonEditor label="태그 (문자열 배열)" value={form.tags} onChange={val => setForm({ ...form, tags: val })} />
+          <StringListEditor label="태그" value={form.tags || []} onChange={val => setForm({ ...form, tags: val })} placeholder={"교과서 개발\n과학 콘텐츠\n디지털 교육"} />
         </div>
       )}
 
@@ -611,12 +685,7 @@ function ProjectForm({ initialData, onSave, onCancel, isPending }: any) {
       )}
 
       {activeSection === "details" && (
-        <div className="space-y-4">
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            각 섹션은 {"{ heading, items[], subSections[] }"} 형태입니다. subSections는 {"{ title, items[] }"} 배열입니다.
-          </p>
-          <JsonEditor label="상세 섹션" value={form.details} onChange={val => setForm({ ...form, details: val })} />
-        </div>
+        <DetailsEditor value={form.details || []} onChange={val => setForm({ ...form, details: val })} />
       )}
 
       <div className="flex gap-3 pt-2 border-t border-border">
@@ -627,16 +696,33 @@ function ProjectForm({ initialData, onSave, onCancel, isPending }: any) {
   );
 }
 
+type CareerEntry = { period: string; company: string; role: string; description: string; sortOrder: number };
+
 function CareerEditor() {
   const { data, refetch } = useGetCareer({ query: { retry: false } });
   const mutation = useUpdateCareer();
-  const [form, setForm] = useState(data || { sectionTitle: "경력", entries: [] });
+  const [form, setForm] = useState(data || { sectionTitle: "경력", entries: [] as CareerEntry[] });
 
-  useEffect(() => { if (data) setForm(data); }, [data]);
+  useEffect(() => { if (data) setForm(data as typeof form); }, [data]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutation.mutate({ data: form }, { onSuccess: () => refetch() });
+    const withOrder = form.entries.map((e, i) => ({ ...e, sortOrder: i }));
+    mutation.mutate({ data: { ...form, entries: withOrder } as any }, { onSuccess: () => refetch() });
+  };
+
+  const addEntry = () => {
+    setForm({ ...form, entries: [...form.entries, { period: "", company: "", role: "", description: "", sortOrder: form.entries.length }] });
+  };
+
+  const updateEntry = (idx: number, field: keyof CareerEntry, value: string) => {
+    const entries = [...form.entries];
+    entries[idx] = { ...entries[idx], [field]: value };
+    setForm({ ...form, entries });
+  };
+
+  const removeEntry = (idx: number) => {
+    setForm({ ...form, entries: form.entries.filter((_, i) => i !== idx) });
   };
 
   return (
@@ -645,7 +731,57 @@ function CareerEditor() {
         <Label>섹션 제목</Label>
         <Input value={form.sectionTitle} onChange={e => setForm({ ...form, sectionTitle: e.target.value })} />
       </div>
-      <JsonEditor label="경력 항목 (period, company, role, description, sortOrder)" value={form.entries} onChange={val => setForm({ ...form, entries: val })} />
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <Label>경력 항목</Label>
+          <button
+            type="button"
+            onClick={addEntry}
+            className="text-xs font-semibold uppercase tracking-widest px-3 py-1.5 border border-foreground hover:bg-foreground hover:text-background transition-colors"
+          >
+            + 항목 추가
+          </button>
+        </div>
+        {form.entries.length === 0 && (
+          <p className="text-xs text-muted-foreground">경력 항목 없음. "+ 항목 추가"를 클릭해서 추가하세요.</p>
+        )}
+        <div className="space-y-3">
+          {form.entries.map((entry, idx) => (
+            <div key={idx} className="p-4 border bg-card space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">경력 {idx + 1}</span>
+                <button
+                  type="button"
+                  onClick={() => removeEntry(idx)}
+                  className="text-xs px-2 py-1 border border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors"
+                >
+                  삭제
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label className="text-xs">기간</Label>
+                  <Input value={entry.period} onChange={e => updateEntry(idx, "period", e.target.value)} placeholder="예: 2021.03 ~ 2024.02" />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs">회사 / 기관</Label>
+                  <Input value={entry.company} onChange={e => updateEntry(idx, "company", e.target.value)} placeholder="예: 비상교육" />
+                </div>
+                <div className="space-y-1 md:col-span-2">
+                  <Label className="text-xs">직책 / 직무</Label>
+                  <Input value={entry.role} onChange={e => updateEntry(idx, "role", e.target.value)} placeholder="예: 콘텐츠 기획자" />
+                </div>
+                <div className="space-y-1 md:col-span-2">
+                  <Label className="text-xs">설명 (선택)</Label>
+                  <Textarea value={entry.description} onChange={e => updateEntry(idx, "description", e.target.value)} className="h-16 text-sm" placeholder="담당 업무나 성과를 간략히 적어주세요" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <Button type="submit" disabled={mutation.isPending}>{mutation.isPending ? "저장 중..." : "저장"}</Button>
       {mutation.isSuccess && <p className="text-xs text-green-600">저장됐습니다</p>}
     </form>
@@ -670,7 +806,7 @@ function SkillsEditor() {
         <Label>섹션 제목</Label>
         <Input value={form.sectionTitle} onChange={e => setForm({ ...form, sectionTitle: e.target.value })} />
       </div>
-      <JsonEditor label="스킬 목록 (문자열 배열)" value={form.skills} onChange={val => setForm({ ...form, skills: val })} />
+      <StringListEditor label="스킬 목록" value={form.skills || []} onChange={val => setForm({ ...form, skills: val })} placeholder={"콘텐츠 기획\n스토리보드 작성\n교육과정 분석"} />
       <Button type="submit" disabled={mutation.isPending}>{mutation.isPending ? "저장 중..." : "저장"}</Button>
       {mutation.isSuccess && <p className="text-xs text-green-600">저장됐습니다</p>}
     </form>
