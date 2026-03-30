@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>과학 디지털 콘텐츠 개발 — 양승우</title>
+  <meta name="description" content="영상, 인터랙티브 콘텐츠, 디지털 교과서를 학습 흐름에 맞춰 설계한 콘텐츠 개발 프로젝트" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="detail-page">
+
+  <div id="progress-bar"></div>
+
+  <nav>
+    <a class="logo" href="./index.html">YANG.</a>
+    <ul>
+      <li><a href="./index.html#projects">Projects</a></li>
+      <li><a href="./index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── 히어로 ── -->
+  <section class="detail-hero">
+    <div class="detail-hero-inner">
+      <a class="detail-back" href="./index.html">Projects로 돌아가기</a>
+      <p class="detail-cat">디지털 콘텐츠</p>
+      <h1 class="detail-title">과학 디지털 콘텐츠 개발</h1>
+      <p class="detail-summary">
+        영상, 인터랙티브 콘텐츠, 디지털 교과서를 학습 흐름에 맞춰 설계한 콘텐츠 개발 프로젝트
+      </p>
+      <div class="detail-tags tags">
+        <span class="tag dark">디지털 콘텐츠</span>
+        <span class="tag dark">영상 기획</span>
+        <span class="tag dark">스토리보드</span>
+        <span class="tag dark">UI/UX</span>
+        <span class="tag dark">비바샘</span>
+        <span class="tag dark">두클래스</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 대표 이미지 ── -->
+  <section class="detail-image-section">
+    <div class="detail-image-inner">
+      <img src="./images/digital-content.jpg" alt="전기 부품 선택 인터랙티브 콘텐츠" />
+      <p class="detail-image-caption">전기 부품 선택 인터랙티브 콘텐츠</p>
+    </div>
+  </section>
+
+  <!-- ── 본문 ── -->
+  <section class="detail-body">
+    <div class="detail-body-inner">
+
+      <div class="detail-section">
+        <p class="detail-section-heading">프로젝트 개요</p>
+        <ul>
+          <li>디지털 교과서 및 교수학습 플랫폼 콘텐츠 개발</li>
+          <li>플랫폼: 비바샘, 두클래스</li>
+        </ul>
+      </div>
+
+      <div class="detail-section">
+        <p class="detail-section-heading">콘텐츠 유형</p>
+        <div class="detail-subsection">
+          <p class="detail-subsection-title">1. 영상 콘텐츠</p>
+          <ul>
+            <li>탐구 영상</li>
+            <li>모션그래픽 영상</li>
+            <li>1분 개념 영상 (쇼츠형)</li>
+            <li>과학송 (랩 콘텐츠)</li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <p class="detail-subsection-title">2. 인터랙티브 콘텐츠</p>
+          <ul>
+            <li>디지털 실험실</li>
+            <li>VR 콘텐츠 (기획 진행)</li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <p class="detail-subsection-title">3. 강의 콘텐츠</p>
+          <ul>
+            <li>동영상 강의 스토리보드 설계</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <p class="detail-section-heading">핵심 기획</p>
+        <div class="detail-subsection">
+          <p class="detail-subsection-title">1. 학습 흐름 기반 콘텐츠 배치</p>
+          <ul>
+            <li>디지털 교과서 내 콘텐츠 위치 설계</li>
+            <li>학습 타이밍에 맞춘 콘텐츠 삽입</li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <p class="detail-subsection-title">2. UI/UX 설계 경험</p>
+          <ul>
+            <li>화면 설계서 작성 및 개발자 협업</li>
+            <li>사용자 흐름 기반 인터페이스 설계</li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <p class="detail-subsection-title">3. 콘텐츠 포맷 확장</p>
+          <ul>
+            <li>짧은 영상 콘텐츠 기획</li>
+            <li>참여형 학습 콘텐츠 개발</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <p class="detail-section-heading">나의 역할</p>
+        <ul>
+          <li>콘텐츠 기획 및 스토리보드 작성</li>
+          <li>UI/UX 설계 협업</li>
+          <li>플랫폼 콘텐츠 구조 설계</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 양승우 — Science Content Planner</p>
+  </footer>
+
+  <script>
+    const bar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = `scaleX(${window.scrollY / total})`;
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>디지털화 기획 경진대회 대상 — 양승우</title>
+  <meta name="description" content="사내 출판의 디지털화를 도모하기 위한 구독형 서비스 및 메타버스 플랫폼 기획안 발표" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="detail-page">
+
+  <div id="progress-bar"></div>
+
+  <nav>
+    <a class="logo" href="./index.html">YANG.</a>
+    <ul>
+      <li><a href="./index.html#projects">Projects</a></li>
+      <li><a href="./index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── 히어로 ── -->
+  <section class="detail-hero">
+    <div class="detail-hero-inner">
+      <a class="detail-back" href="./index.html">Projects로 돌아가기</a>
+      <p class="detail-cat">수상 / 기획</p>
+      <h1 class="detail-title">디지털화 기획 경진대회 대상</h1>
+      <p class="detail-summary">
+        사내 출판의 디지털화를 도모하기 위한 구독형 서비스 및 메타버스 플랫폼 기획안 발표
+      </p>
+      <div class="detail-tags tags">
+        <span class="tag dark">기획</span>
+        <span class="tag dark">메타버스</span>
+        <span class="tag dark">구독 서비스</span>
+        <span class="tag dark">디지털화</span>
+        <span class="tag dark">수상</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 대표 이미지 ── -->
+  <section class="detail-image-section">
+    <div class="detail-image-inner">
+      <img src="./images/competition.jpg" alt="2021 출판의 디지털화 기획 경진대회 대상 시상식" />
+      <p class="detail-image-caption">2021 출판의 디지털화 기획 경진대회 대상 시상식</p>
+    </div>
+  </section>
+
+  <!-- ── 본문 ── -->
+  <section class="detail-body">
+    <div class="detail-body-inner">
+
+      <div class="detail-section">
+        <p class="detail-section-heading">수상 정보</p>
+        <ul>
+          <li>수상: 2021 출판의 디지털화 기획안 경진대회 대상 (비상교육)</li>
+          <li>연도: 2021년</li>
+        </ul>
+      </div>
+
+      <div class="detail-section">
+        <p class="detail-section-heading">기획 내용</p>
+        <div class="detail-subsection">
+          <p class="detail-subsection-title">구독형 서비스 기획</p>
+          <ul>
+            <li>기존 콘텐츠 자산을 활용한 구독 모델 설계</li>
+            <li>사용자 세그먼트별 콘텐츠 큐레이션 전략</li>
+          </ul>
+        </div>
+        <div class="detail-subsection">
+          <p class="detail-subsection-title">메타버스 공유 플랫폼</p>
+          <ul>
+            <li>과학 실험·탐구 활동을 가상공간에서 구현</li>
+            <li>교사·학생 간 콘텐츠 공유 및 협업 플랫폼 구축</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <p class="detail-section-heading">의의</p>
+        <ul>
+          <li>단순 교재 개발에서 플랫폼 기획으로 역량 확장</li>
+          <li>디지털 전환 시대의 출판 비즈니스 모델 제시</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 양승우 — Science Content Planner</p>
+  </footer>
+
+  <script>
+    const bar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = `scaleX(${window.scrollY / total})`;
+    });
+  </script>
+
+</body>
+</html>

@@ -5,594 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>양승우 — Science Content Planner</title>
   <meta name="description" content="과학 콘텐츠 기획자 양승우의 포트폴리오" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --black: #0a0a0a;
-      --white: #fafafa;
-      --muted: #888;
-      --border: rgba(10,10,10,0.1);
-      --border-inv: rgba(250,250,250,0.12);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Pretendard', sans-serif;
-      background: var(--white);
-      color: var(--black);
-      line-height: 1.6;
-      word-break: keep-all;
-      overflow-x: hidden;
-    }
-
-    /* ── Scroll progress bar ── */
-    #progress-bar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--black);
-      transform-origin: left;
-      transform: scaleX(0);
-      z-index: 1000;
-      transition: transform 0.1s linear;
-    }
-
-    /* ── Navbar ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      background: rgba(250,250,250,0.92);
-      backdrop-filter: blur(12px);
-      z-index: 100;
-    }
-    nav .logo {
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-decoration: none;
-      color: var(--black);
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 36px;
-    }
-    nav ul a {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--black);
-      transition: opacity 0.2s;
-    }
-    nav ul a:hover { opacity: 0.5; }
-
-    /* ── 3D Wireframe Backgrounds ── */
-    .bg-shapes {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-    }
-
-    .cube-wrap {
-      position: absolute;
-      perspective: 900px;
-    }
-    .cube {
-      position: relative;
-      transform-style: preserve-3d;
-    }
-    .cube-face {
-      position: absolute;
-      border: 1px solid currentColor;
-    }
-
-    @keyframes rotateCubeA {
-      0%   { transform: rotateX(18deg) rotateY(0deg); }
-      50%  { transform: rotateX(32deg) rotateY(180deg); }
-      100% { transform: rotateX(18deg) rotateY(360deg); }
-    }
-    @keyframes rotateCubeB {
-      0%   { transform: rotateX(22deg) rotateY(0deg); }
-      50%  { transform: rotateX(12deg) rotateY(180deg); }
-      100% { transform: rotateX(22deg) rotateY(360deg); }
-    }
-
-    .diamond-wrap {
-      position: absolute;
-      perspective: 700px;
-    }
-    .diamond-svg {
-      display: block;
-      transform-style: preserve-3d;
-    }
-    @keyframes rotateDiamondA {
-      0%   { transform: rotateX(-15deg) rotateY(0deg); }
-      50%  { transform: rotateX(20deg) rotateY(180deg); }
-      100% { transform: rotateX(-15deg) rotateY(360deg); }
-    }
-    @keyframes rotateDiamondB {
-      0%   { transform: rotateX(10deg) rotateY(0deg); }
-      50%  { transform: rotateX(-10deg) rotateY(180deg); }
-      100% { transform: rotateX(10deg) rotateY(360deg); }
-    }
-
-    /* ── Sections ── */
-    section { position: relative; overflow: hidden; }
-    .inner { position: relative; z-index: 1; }
-
-    /* ── Hero ── */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 96px 40px 64px;
-      background: var(--white);
-    }
-    .hero-grid {
-      max-width: 1100px;
-      margin: 0 auto;
-      width: 100%;
-      display: grid;
-      grid-template-columns: 3fr 2fr;
-      gap: 64px;
-      align-items: center;
-    }
-    .hero-tag {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-    .hero-name {
-      font-size: clamp(64px, 10vw, 120px);
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-    .hero-subtitle {
-      font-size: 15px;
-      color: var(--muted);
-      margin-bottom: 32px;
-    }
-    .hero-divider {
-      width: 32px;
-      height: 2px;
-      background: var(--black);
-      margin-bottom: 28px;
-    }
-    .hero-desc {
-      font-size: 15px;
-      line-height: 1.75;
-      color: #333;
-      max-width: 480px;
-    }
-    .hero-img-wrap {
-      aspect-ratio: 3/4;
-      max-height: 520px;
-      overflow: hidden;
-      filter: grayscale(100%);
-    }
-    .hero-img-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top;
-    }
-
-    /* ── Section Title ── */
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 24px;
-      margin-bottom: 64px;
-    }
-    .section-header.inv {
-      border-bottom-color: var(--border-inv);
-    }
-    .section-title {
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-    .section-tag {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .section-tag.inv { color: rgba(250,250,250,0.4); }
-
-    /* ── Projects ── */
-    #projects {
-      padding: 96px 40px;
-      background: var(--black);
-      color: var(--white);
-    }
-    .projects-grid {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2px;
-    }
-    .project-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border-inv);
-      padding: 36px 32px;
-      cursor: pointer;
-      transition: background 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-    .project-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(255,255,255,0.04);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-    .project-card:hover::before { opacity: 1; }
-    .project-card-cat {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: rgba(250,250,250,0.4);
-      margin-bottom: 16px;
-    }
-    .project-card-title {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 16px;
-      line-height: 1.3;
-    }
-    .project-card-summary {
-      font-size: 13px;
-      color: rgba(250,250,250,0.6);
-      line-height: 1.75;
-      margin-bottom: 24px;
-    }
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .tag {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      padding: 4px 10px;
-      border: 1px solid rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.7);
-    }
-    .tag.dark {
-      border-color: rgba(0,0,0,0.18);
-      color: rgba(0,0,0,0.65);
-    }
-    .project-card-arrow {
-      position: absolute;
-      bottom: 32px;
-      right: 32px;
-      font-size: 18px;
-      opacity: 0.25;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .project-card:hover .project-card-arrow {
-      opacity: 0.8;
-      transform: translate(4px, -4px);
-    }
-
-    /* ── Contact ── */
-    #contact {
-      padding: 96px 40px;
-      background: var(--black);
-      color: var(--white);
-    }
-    .contact-inner {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 40px;
-    }
-    .contact-item-label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: rgba(250,250,250,0.35);
-      margin-bottom: 10px;
-    }
-    .contact-item-value {
-      font-size: 15px;
-      font-weight: 400;
-      color: rgba(250,250,250,0.85);
-    }
-    .contact-item-value a {
-      color: inherit;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,0.25);
-      transition: border-color 0.2s;
-    }
-    .contact-item-value a:hover { border-color: rgba(255,255,255,0.8); }
-
-    /* ── Footer ── */
-    footer {
-      padding: 32px 40px;
-      background: var(--black);
-      color: rgba(255,255,255,0.25);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      border-top: 1px solid var(--border-inv);
-    }
-
-    /* ── Modal ── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.92);
-      z-index: 500;
-      overflow-y: auto;
-      padding: 40px 20px;
-    }
-    .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
-    .modal-box {
-      background: var(--white);
-      color: var(--black);
-      max-width: 760px;
-      width: 100%;
-      padding: 52px 52px 64px;
-      position: relative;
-      margin: auto;
-    }
-    .modal-close {
-      position: absolute;
-      top: 24px; right: 28px;
-      background: none;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      color: var(--black);
-      line-height: 1;
-      opacity: 0.5;
-      transition: opacity 0.2s;
-    }
-    .modal-close:hover { opacity: 1; }
-    .modal-cat {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-    .modal-title {
-      font-size: 34px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 20px;
-      line-height: 1.2;
-    }
-    .modal-summary {
-      font-size: 15px;
-      color: #555;
-      line-height: 1.75;
-      margin-bottom: 36px;
-      padding-bottom: 36px;
-      border-bottom: 1px solid var(--border);
-    }
-    .modal-images {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin-bottom: 40px;
-    }
-    .modal-images img {
-      width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-    }
-    .modal-section { margin-bottom: 32px; }
-    .modal-section-heading {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-    .modal-section ul { padding-left: 0; list-style: none; }
-    .modal-section li {
-      font-size: 14px;
-      color: #444;
-      padding: 5px 0;
-      padding-left: 14px;
-      position: relative;
-    }
-    .modal-section li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--muted);
-      font-size: 11px;
-    }
-    .modal-subsection { margin-top: 16px; }
-    .modal-subsection-title {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-    .modal-tags { margin-top: 40px; }
-
-    /* ── Scroll reveal ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 768px) {
-      nav { padding: 0 20px; }
-      nav ul { gap: 20px; }
-      #hero { padding: 80px 20px 48px; }
-      .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-      .hero-img-wrap { order: -1; max-height: 320px; }
-      #projects, #contact { padding: 72px 20px; }
-      .modal-box { padding: 36px 24px 48px; }
-      .modal-title { font-size: 26px; }
-    }
-  </style>
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
 
   <div id="progress-bar"></div>
 
   <nav>
-    <a class="logo" href="#hero">YANG.</a>
+    <a class="logo" href="./index.html">YANG.</a>
     <ul>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 
-  <!-- ────────────── HERO ────────────── -->
+  <!-- ── HERO ── -->
   <section id="hero">
-
-    <!-- Light BG: cube top-right + diamond bottom-left -->
     <div class="bg-shapes">
       <div class="cube-wrap" style="top:-80px; right:-60px; width:280px; height:280px;">
-        <div class="cube" style="width:280px; height:280px; animation: rotateCubeA 38s linear infinite; color:#000;">
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.065; transform:translateZ(140px);"></div>
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.065; transform:translateZ(-140px);"></div>
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.065; transform:rotateY(90deg) translateZ(140px);"></div>
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.065; transform:rotateY(-90deg) translateZ(140px);"></div>
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.065; transform:rotateX(90deg) translateZ(140px);"></div>
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.065; transform:rotateX(-90deg) translateZ(140px);"></div>
+        <div class="cube" style="width:280px;height:280px;animation:rotateCubeA 38s linear infinite;color:#000;">
+          <div class="cube-face" style="width:280px;height:280px;opacity:.065;transform:translateZ(140px);"></div>
+          <div class="cube-face" style="width:280px;height:280px;opacity:.065;transform:translateZ(-140px);"></div>
+          <div class="cube-face" style="width:280px;height:280px;opacity:.065;transform:rotateY(90deg) translateZ(140px);"></div>
+          <div class="cube-face" style="width:280px;height:280px;opacity:.065;transform:rotateY(-90deg) translateZ(140px);"></div>
+          <div class="cube-face" style="width:280px;height:280px;opacity:.065;transform:rotateX(90deg) translateZ(140px);"></div>
+          <div class="cube-face" style="width:280px;height:280px;opacity:.065;transform:rotateX(-90deg) translateZ(140px);"></div>
         </div>
       </div>
-      <div class="diamond-wrap" style="bottom:60px; left:40px; width:160px; height:160px;">
+      <div class="diamond-wrap" style="bottom:60px;left:40px;width:160px;height:160px;">
         <svg class="diamond-svg" width="160" height="160" viewBox="0 0 160 160" fill="none"
-             style="animation: rotateDiamondA 26s linear 5s infinite;">
-          <polygon points="80,0 160,80 80,160 0,80" stroke="#000" stroke-width="1" opacity="0.07"/>
-          <line x1="80" y1="0" x2="80" y2="160" stroke="#000" stroke-width="0.7" opacity="0.05"/>
-          <line x1="0" y1="80" x2="160" y2="80" stroke="#000" stroke-width="0.7" opacity="0.05"/>
-          <polygon points="40,40 120,40 120,120 40,120" stroke="#000" stroke-width="0.8" opacity="0.035"/>
-          <line x1="80" y1="0" x2="40" y2="40" stroke="#000" stroke-width="0.6" opacity="0.035"/>
-          <line x1="160" y1="80" x2="120" y2="40" stroke="#000" stroke-width="0.6" opacity="0.035"/>
-          <line x1="80" y1="160" x2="120" y2="120" stroke="#000" stroke-width="0.6" opacity="0.035"/>
-          <line x1="0" y1="80" x2="40" y2="120" stroke="#000" stroke-width="0.6" opacity="0.035"/>
+             style="animation:rotateDiamondA 26s linear 5s infinite;">
+          <polygon points="80,0 160,80 80,160 0,80" stroke="#000" stroke-width="1" opacity=".07"/>
+          <line x1="80" y1="0" x2="80" y2="160" stroke="#000" stroke-width=".7" opacity=".05"/>
+          <line x1="0" y1="80" x2="160" y2="80" stroke="#000" stroke-width=".7" opacity=".05"/>
         </svg>
-      </div>
-      <div class="cube-wrap" style="top:35%; right:20%; width:140px; height:140px;">
-        <div class="cube" style="width:140px; height:140px; animation: rotateCubeB 28s linear 10s infinite; color:#000;">
-          <div class="cube-face" style="width:140px;height:140px; opacity:0.05; transform:translateZ(70px);"></div>
-          <div class="cube-face" style="width:140px;height:140px; opacity:0.05; transform:translateZ(-70px);"></div>
-          <div class="cube-face" style="width:140px;height:140px; opacity:0.05; transform:rotateY(90deg) translateZ(70px);"></div>
-          <div class="cube-face" style="width:140px;height:140px; opacity:0.05; transform:rotateY(-90deg) translateZ(70px);"></div>
-          <div class="cube-face" style="width:140px;height:140px; opacity:0.05; transform:rotateX(90deg) translateZ(70px);"></div>
-          <div class="cube-face" style="width:140px;height:140px; opacity:0.05; transform:rotateX(-90deg) translateZ(70px);"></div>
-        </div>
       </div>
     </div>
 
     <div class="inner hero-grid">
       <div>
         <p class="hero-tag reveal">Portfolio</p>
-        <h1 class="hero-name reveal" style="transition-delay:0.1s">양승우</h1>
-        <p class="hero-subtitle reveal" style="transition-delay:0.2s">Science Online Content Planner</p>
-        <div class="hero-divider reveal" style="transition-delay:0.3s"></div>
-        <p class="hero-desc reveal" style="transition-delay:0.4s">
+        <h1 class="hero-name reveal" style="transition-delay:.1s">양승우</h1>
+        <p class="hero-subtitle reveal" style="transition-delay:.2s">Science Online Content Planner</p>
+        <div class="hero-divider reveal" style="transition-delay:.3s"></div>
+        <p class="hero-desc reveal" style="transition-delay:.4s">
           초·중·고 과학 교과서 개발 경험을 기반으로, 영상, 인터랙티브 콘텐츠,
           디지털 교과서까지 확장하며 학습자의 이해 흐름을 중심으로 콘텐츠를 설계합니다.
         </p>
       </div>
-      <div class="hero-img-wrap reveal" style="transition-delay:0.2s">
+      <div class="hero-img-wrap reveal" style="transition-delay:.2s">
         <img src="./images/profile.jpg" alt="양승우 프로필" />
       </div>
     </div>
   </section>
 
-  <!-- ────────────── PROJECTS ────────────── -->
+  <!-- ── PROJECTS ── -->
   <section id="projects">
-
-    <!-- Dark BG: cube top-left + diamond bottom-right -->
     <div class="bg-shapes">
-      <div class="cube-wrap" style="top:-100px; left:-80px; width:320px; height:320px;">
-        <div class="cube" style="width:320px; height:320px; animation: rotateCubeA 42s linear 2s infinite; color:#fff;">
-          <div class="cube-face" style="width:320px;height:320px; opacity:0.07; transform:translateZ(160px);"></div>
-          <div class="cube-face" style="width:320px;height:320px; opacity:0.07; transform:translateZ(-160px);"></div>
-          <div class="cube-face" style="width:320px;height:320px; opacity:0.07; transform:rotateY(90deg) translateZ(160px);"></div>
-          <div class="cube-face" style="width:320px;height:320px; opacity:0.07; transform:rotateY(-90deg) translateZ(160px);"></div>
-          <div class="cube-face" style="width:320px;height:320px; opacity:0.07; transform:rotateX(90deg) translateZ(160px);"></div>
-          <div class="cube-face" style="width:320px;height:320px; opacity:0.07; transform:rotateX(-90deg) translateZ(160px);"></div>
+      <div class="cube-wrap" style="top:-100px;left:-80px;width:320px;height:320px;">
+        <div class="cube" style="width:320px;height:320px;animation:rotateCubeA 42s linear 2s infinite;color:#fff;">
+          <div class="cube-face" style="width:320px;height:320px;opacity:.07;transform:translateZ(160px);"></div>
+          <div class="cube-face" style="width:320px;height:320px;opacity:.07;transform:translateZ(-160px);"></div>
+          <div class="cube-face" style="width:320px;height:320px;opacity:.07;transform:rotateY(90deg) translateZ(160px);"></div>
+          <div class="cube-face" style="width:320px;height:320px;opacity:.07;transform:rotateY(-90deg) translateZ(160px);"></div>
+          <div class="cube-face" style="width:320px;height:320px;opacity:.07;transform:rotateX(90deg) translateZ(160px);"></div>
+          <div class="cube-face" style="width:320px;height:320px;opacity:.07;transform:rotateX(-90deg) translateZ(160px);"></div>
         </div>
       </div>
-      <div class="diamond-wrap" style="bottom:50px; right:60px; width:180px; height:180px;">
+      <div class="diamond-wrap" style="bottom:50px;right:60px;width:180px;height:180px;">
         <svg class="diamond-svg" width="180" height="180" viewBox="0 0 180 180" fill="none"
-             style="animation: rotateDiamondB 28s linear 7s infinite;">
-          <polygon points="90,0 180,90 90,180 0,90" stroke="#fff" stroke-width="1" opacity="0.075"/>
-          <line x1="90" y1="0" x2="90" y2="180" stroke="#fff" stroke-width="0.7" opacity="0.055"/>
-          <line x1="0" y1="90" x2="180" y2="90" stroke="#fff" stroke-width="0.7" opacity="0.055"/>
-          <polygon points="45,45 135,45 135,135 45,135" stroke="#fff" stroke-width="0.8" opacity="0.04"/>
-          <line x1="90" y1="0" x2="45" y2="45" stroke="#fff" stroke-width="0.6" opacity="0.04"/>
-          <line x1="180" y1="90" x2="135" y2="45" stroke="#fff" stroke-width="0.6" opacity="0.04"/>
-          <line x1="90" y1="180" x2="135" y2="135" stroke="#fff" stroke-width="0.6" opacity="0.04"/>
-          <line x1="0" y1="90" x2="45" y2="135" stroke="#fff" stroke-width="0.6" opacity="0.04"/>
+             style="animation:rotateDiamondB 28s linear 7s infinite;">
+          <polygon points="90,0 180,90 90,180 0,90" stroke="#fff" stroke-width="1" opacity=".075"/>
+          <line x1="90" y1="0" x2="90" y2="180" stroke="#fff" stroke-width=".7" opacity=".055"/>
+          <line x1="0" y1="90" x2="180" y2="90" stroke="#fff" stroke-width=".7" opacity=".055"/>
         </svg>
-      </div>
-      <div class="cube-wrap" style="top:40%; right:10%; width:160px; height:160px;">
-        <div class="cube" style="width:160px; height:160px; animation: rotateCubeB 30s linear 14s infinite; color:#fff;">
-          <div class="cube-face" style="width:160px;height:160px; opacity:0.055; transform:translateZ(80px);"></div>
-          <div class="cube-face" style="width:160px;height:160px; opacity:0.055; transform:translateZ(-80px);"></div>
-          <div class="cube-face" style="width:160px;height:160px; opacity:0.055; transform:rotateY(90deg) translateZ(80px);"></div>
-          <div class="cube-face" style="width:160px;height:160px; opacity:0.055; transform:rotateY(-90deg) translateZ(80px);"></div>
-          <div class="cube-face" style="width:160px;height:160px; opacity:0.055; transform:rotateX(90deg) translateZ(80px);"></div>
-          <div class="cube-face" style="width:160px;height:160px; opacity:0.055; transform:rotateX(-90deg) translateZ(80px);"></div>
-        </div>
       </div>
     </div>
 
-    <div class="inner" style="max-width:1100px; margin:0 auto;">
+    <div class="inner" style="max-width:1100px;margin:0 auto;">
       <div class="section-header inv reveal">
         <h2 class="section-title">Projects</h2>
         <span class="section-tag inv">Work</span>
       </div>
+
       <div class="projects-grid">
 
         <!-- Project 1 -->
-        <div class="project-card reveal" onclick="openModal('p1')" style="transition-delay:0.05s">
+        <a class="project-card reveal" href="./project-1.html" style="transition-delay:.05s">
           <p class="project-card-cat">교과서 개발</p>
           <h3 class="project-card-title">과학 교과서 개발</h3>
           <p class="project-card-summary">교육과정 기반 개념 위계를 설계하고, 학습 흐름 중심으로 교과서를 개발한 프로젝트</p>
@@ -603,10 +102,10 @@
             <span class="tag">학습 설계</span>
           </div>
           <span class="project-card-arrow">↗</span>
-        </div>
+        </a>
 
         <!-- Project 2 -->
-        <div class="project-card reveal" onclick="openModal('p2')" style="transition-delay:0.1s">
+        <a class="project-card reveal" href="./project-2.html" style="transition-delay:.1s">
           <p class="project-card-cat">디지털 콘텐츠</p>
           <h3 class="project-card-title">과학 디지털 콘텐츠 개발</h3>
           <p class="project-card-summary">영상, 인터랙티브 콘텐츠, 디지털 교과서를 학습 흐름에 맞춰 설계한 콘텐츠 개발 프로젝트</p>
@@ -617,10 +116,10 @@
             <span class="tag">UI/UX</span>
           </div>
           <span class="project-card-arrow">↗</span>
-        </div>
+        </a>
 
         <!-- Project 3 -->
-        <div class="project-card reveal" onclick="openModal('p3')" style="transition-delay:0.15s">
+        <a class="project-card reveal" href="./project-3.html" style="transition-delay:.15s">
           <p class="project-card-cat">수상 / 기획</p>
           <h3 class="project-card-title">디지털화 기획 경진대회 대상</h3>
           <p class="project-card-summary">사내 출판의 디지털화를 도모하기 위한 구독형 서비스 및 메타버스 플랫폼 기획안 발표</p>
@@ -631,33 +130,22 @@
             <span class="tag">수상</span>
           </div>
           <span class="project-card-arrow">↗</span>
-        </div>
+        </a>
 
       </div>
     </div>
   </section>
 
-  <!-- ────────────── CONTACT ────────────── -->
+  <!-- ── CONTACT ── -->
   <section id="contact">
     <div class="bg-shapes">
-      <div class="diamond-wrap" style="top:20%; right:18%; width:240px; height:240px;">
+      <div class="diamond-wrap" style="top:20%;right:18%;width:240px;height:240px;">
         <svg class="diamond-svg" width="240" height="240" viewBox="0 0 240 240" fill="none"
-             style="animation: rotateDiamondA 35s linear 6s infinite;">
-          <polygon points="120,0 240,120 120,240 0,120" stroke="#fff" stroke-width="1" opacity="0.06"/>
-          <line x1="120" y1="0" x2="120" y2="240" stroke="#fff" stroke-width="0.7" opacity="0.045"/>
-          <line x1="0" y1="120" x2="240" y2="120" stroke="#fff" stroke-width="0.7" opacity="0.045"/>
-          <polygon points="60,60 180,60 180,180 60,180" stroke="#fff" stroke-width="0.8" opacity="0.035"/>
+             style="animation:rotateDiamondA 35s linear 6s infinite;">
+          <polygon points="120,0 240,120 120,240 0,120" stroke="#fff" stroke-width="1" opacity=".06"/>
+          <line x1="120" y1="0" x2="120" y2="240" stroke="#fff" stroke-width=".7" opacity=".045"/>
+          <line x1="0" y1="120" x2="240" y2="120" stroke="#fff" stroke-width=".7" opacity=".045"/>
         </svg>
-      </div>
-      <div class="cube-wrap" style="bottom:-60px; left:-40px; width:280px; height:280px;">
-        <div class="cube" style="width:280px; height:280px; animation: rotateCubeA 36s linear 3s infinite; color:#fff;">
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.06; transform:translateZ(140px);"></div>
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.06; transform:translateZ(-140px);"></div>
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.06; transform:rotateY(90deg) translateZ(140px);"></div>
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.06; transform:rotateY(-90deg) translateZ(140px);"></div>
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.06; transform:rotateX(90deg) translateZ(140px);"></div>
-          <div class="cube-face" style="width:280px;height:280px; opacity:0.06; transform:rotateX(-90deg) translateZ(140px);"></div>
-        </div>
       </div>
     </div>
 
@@ -667,13 +155,13 @@
         <span class="section-tag inv">연락처</span>
       </div>
       <div class="contact-grid">
-        <div class="reveal" style="transition-delay:0.05s">
+        <div class="reveal" style="transition-delay:.05s">
           <p class="contact-item-label">Email</p>
           <p class="contact-item-value">
             <a href="mailto:swyang.sci@gmail.com">swyang.sci@gmail.com</a>
           </p>
         </div>
-        <div class="reveal" style="transition-delay:0.1s">
+        <div class="reveal" style="transition-delay:.1s">
           <p class="contact-item-label">Location</p>
           <p class="contact-item-value">서울, 대한민국</p>
         </div>
@@ -685,159 +173,16 @@
     <p>© 2025 양승우 — Science Content Planner</p>
   </footer>
 
-  <!-- ────────────── MODALS ────────────── -->
-  <div class="modal-overlay" id="modal-overlay" onclick="closeModalOnBg(event)">
-    <div class="modal-box">
-      <button class="modal-close" onclick="closeModal()">✕</button>
-      <div id="modal-content"></div>
-    </div>
-  </div>
-
   <script>
-    /* ── Scroll progress bar ── */
     const bar = document.getElementById('progress-bar');
     window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
       const total = document.documentElement.scrollHeight - window.innerHeight;
-      bar.style.transform = `scaleX(${scrolled / total})`;
+      bar.style.transform = `scaleX(${window.scrollY / total})`;
     });
-
-    /* ── Scroll reveal ── */
-    const observer = new IntersectionObserver((entries) => {
+    const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    /* ── Project data ── */
-    const projects = {
-      p1: {
-        category: '교과서 개발',
-        title: '과학 교과서 개발',
-        summary: '교육과정 기반 개념 위계를 설계하고, 학습 흐름 중심으로 교과서를 개발한 프로젝트',
-        images: [
-          { src: './images/textbook-cover.jpg', caption: '비상교육 과학 교과서 3~4학년 (2022 개정)' },
-        ],
-        tags: ['교과서 개발', '물리학', '교육과정', '학습 설계'],
-        sections: [
-          {
-            heading: '프로젝트 개요',
-            items: ['고등: 물리학Ⅰ, 물리학Ⅱ, 통합과학, 과학탐구실험', '초등: 과학 교과서 개발 (국정·검정)'],
-          },
-          {
-            heading: '핵심 기획',
-            subSections: [
-              { title: '1. 개념 위계 기반 구조 설계', items: ['성취기준 및 단원 간 연결 구조 설계', '개념 간 흐름이 끊기지 않도록 구성'] },
-              { title: '2. 학습 흐름 설계', items: ['대단원: 흥미 → 활동 → 개념 → 적용', '소단원: 동일 구조 반복 적용'] },
-              { title: '3. 시각적 학습 경험 강화', items: ['복잡한 개념을 시각적으로 단순화', '학습 몰입을 위한 편집 구조 설계'] },
-            ],
-          },
-          { heading: '나의 역할', items: ['교과서 콘텐츠 기획 및 구조 설계', '학습 흐름 설계', '편집 방향 기획'] },
-          { heading: '핵심 역량', items: ['교육과정 해석 능력', '개념 구조화 능력', '학습 경험 설계'] },
-        ],
-      },
-      p2: {
-        category: '디지털 콘텐츠',
-        title: '과학 디지털 콘텐츠 개발',
-        summary: '영상, 인터랙티브 콘텐츠, 디지털 교과서를 학습 흐름에 맞춰 설계한 콘텐츠 개발 프로젝트',
-        images: [{ src: './images/digital-content.jpg', caption: '전기 부품 선택 인터랙티브 콘텐츠' }],
-        tags: ['디지털 콘텐츠', '영상 기획', '스토리보드', 'UI/UX', '비바샘', '두클래스'],
-        sections: [
-          { heading: '프로젝트 개요', items: ['디지털 교과서 및 교수학습 플랫폼 콘텐츠 개발', '플랫폼: 비바샘, 두클래스'] },
-          {
-            heading: '콘텐츠 유형',
-            subSections: [
-              { title: '1. 영상 콘텐츠', items: ['탐구 영상', '모션그래픽 영상', '1분 개념 영상 (쇼츠형)', '과학송 (랩 콘텐츠)'] },
-              { title: '2. 인터랙티브 콘텐츠', items: ['디지털 실험실', 'VR 콘텐츠 (기획 진행)'] },
-              { title: '3. 강의 콘텐츠', items: ['동영상 강의 스토리보드 설계'] },
-            ],
-          },
-          {
-            heading: '핵심 기획',
-            subSections: [
-              { title: '1. 학습 흐름 기반 콘텐츠 배치', items: ['디지털 교과서 내 콘텐츠 위치 설계', '학습 타이밍에 맞춘 콘텐츠 삽입'] },
-              { title: '2. UI/UX 설계 경험', items: ['화면 설계서 작성 및 개발자 협업', '사용자 흐름 기반 인터페이스 설계'] },
-              { title: '3. 콘텐츠 포맷 확장', items: ['짧은 영상 콘텐츠 기획', '참여형 학습 콘텐츠 개발'] },
-            ],
-          },
-          { heading: '나의 역할', items: ['콘텐츠 기획 및 스토리보드 작성', 'UI/UX 설계 협업', '플랫폼 콘텐츠 구조 설계'] },
-        ],
-      },
-      p3: {
-        category: '수상 / 기획',
-        title: '디지털화 기획 경진대회 대상',
-        summary: '사내 출판의 디지털화를 도모하기 위한 구독형 서비스 및 메타버스 플랫폼 기획안 발표',
-        images: [{ src: './images/competition.jpg', caption: '2021 출판의 디지털화 기획 경진대회 대상 시상식' }],
-        tags: ['기획', '메타버스', '구독 서비스', '디지털화', '수상'],
-        sections: [
-          { heading: '수상 정보', items: ['수상: 2021 출판의 디지털화 기획안 경진대회 대상 (비상교육)', '연도: 2021년'] },
-          {
-            heading: '기획 내용',
-            subSections: [
-              { title: '구독형 서비스 기획', items: ['기존 콘텐츠 자산을 활용한 구독 모델 설계', '사용자 세그먼트별 콘텐츠 큐레이션 전략'] },
-              { title: '메타버스 공유 플랫폼', items: ['과학 실험·탐구 활동을 가상공간에서 구현', '교사·학생 간 콘텐츠 공유 및 협업 플랫폼 구축'] },
-            ],
-          },
-          { heading: '의의', items: ['단순 교재 개발에서 플랫폼 기획으로 역량 확장', '디지털 전환 시대의 출판 비즈니스 모델 제시'] },
-        ],
-      },
-    };
-
-    /* ── Modal ── */
-    function openModal(id) {
-      const p = projects[id];
-      let imgsHtml = '';
-      if (p.images && p.images.length) {
-        imgsHtml = `<div class="modal-images">${p.images.map(img =>
-          `<img src="${img.src}" alt="${img.caption}" title="${img.caption}" />`
-        ).join('')}</div>`;
-      }
-
-      let sectionsHtml = p.sections.map(sec => {
-        let body = '';
-        if (sec.items && sec.items.length) {
-          body += `<ul>${sec.items.map(i => `<li>${i}</li>`).join('')}</ul>`;
-        }
-        if (sec.subSections) {
-          body += sec.subSections.map(sub =>
-            `<div class="modal-subsection">
-              <p class="modal-subsection-title">${sub.title}</p>
-              <ul>${sub.items.map(i => `<li>${i}</li>`).join('')}</ul>
-            </div>`
-          ).join('');
-        }
-        return `<div class="modal-section">
-          <p class="modal-section-heading">${sec.heading}</p>
-          ${body}
-        </div>`;
-      }).join('');
-
-      const tagsHtml = `<div class="modal-tags tags">${p.tags.map(t =>
-        `<span class="tag dark">${t}</span>`
-      ).join('')}</div>`;
-
-      document.getElementById('modal-content').innerHTML = `
-        <p class="modal-cat">${p.category}</p>
-        <h2 class="modal-title">${p.title}</h2>
-        <p class="modal-summary">${p.summary}</p>
-        ${imgsHtml}
-        ${sectionsHtml}
-        ${tagsHtml}
-      `;
-
-      document.getElementById('modal-overlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      document.getElementById('modal-overlay').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    function closeModalOnBg(e) {
-      if (e.target === document.getElementById('modal-overlay')) closeModal();
-    }
-
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   </script>
 
 </body>
