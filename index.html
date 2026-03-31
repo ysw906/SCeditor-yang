@@ -12,7 +12,7 @@
   <div id="progress-bar"></div>
 
   <nav>
-    <a class="logo" href="./index.html">YANG.</a>
+    <a class="logo" href="./index.html" id="nav-logo">YANG.</a>
     <ul>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -22,7 +22,7 @@
   <!-- ── HERO ── -->
   <section id="hero">
     <div class="bg-shapes">
-      <div class="cube-wrap" style="top:-80px; right:-60px; width:280px; height:280px;">
+      <div class="cube-wrap" style="top:-80px;right:-60px;width:280px;height:280px;">
         <div class="cube" style="width:280px;height:280px;animation:rotateCubeA 38s linear infinite;color:#000;">
           <div class="cube-face" style="width:280px;height:280px;opacity:.065;transform:translateZ(140px);"></div>
           <div class="cube-face" style="width:280px;height:280px;opacity:.065;transform:translateZ(-140px);"></div>
@@ -45,16 +45,16 @@
     <div class="inner hero-grid">
       <div>
         <p class="hero-tag reveal">Portfolio</p>
-        <h1 class="hero-name reveal" style="transition-delay:.1s">양승우</h1>
-        <p class="hero-subtitle reveal" style="transition-delay:.2s">Science Online Content Planner</p>
+        <h1 class="hero-name reveal" style="transition-delay:.1s" id="hero-name">양승우</h1>
+        <p class="hero-subtitle reveal" style="transition-delay:.2s" id="hero-subtitle">Science Online Content Planner</p>
         <div class="hero-divider reveal" style="transition-delay:.3s"></div>
-        <p class="hero-desc reveal" style="transition-delay:.4s">
+        <p class="hero-desc reveal" style="transition-delay:.4s" id="hero-desc">
           초·중·고 과학 교과서 개발 경험을 기반으로, 영상, 인터랙티브 콘텐츠,
           디지털 교과서까지 확장하며 학습자의 이해 흐름을 중심으로 콘텐츠를 설계합니다.
         </p>
       </div>
       <div class="hero-img-wrap reveal" style="transition-delay:.2s">
-        <img src="./images/profile.jpg" alt="양승우 프로필" />
+        <img id="hero-profile" src="./images/profile.jpg" alt="양승우 프로필" />
       </div>
     </div>
   </section>
@@ -87,51 +87,38 @@
         <h2 class="section-title">Projects</h2>
         <span class="section-tag inv">Work</span>
       </div>
-
-      <div class="projects-grid">
-
-        <!-- Project 1 -->
+      <div class="projects-grid" id="projects-grid">
+        <!-- 카드는 JS로 생성 -->
         <a class="project-card reveal" href="./project-1.html" style="transition-delay:.05s">
-          <p class="project-card-cat">교과서 개발</p>
-          <h3 class="project-card-title">과학 교과서 개발</h3>
-          <p class="project-card-summary">교육과정 기반 개념 위계를 설계하고, 학습 흐름 중심으로 교과서를 개발한 프로젝트</p>
-          <div class="tags">
-            <span class="tag">교과서 개발</span>
-            <span class="tag">물리학</span>
-            <span class="tag">교육과정</span>
-            <span class="tag">학습 설계</span>
+          <p class="project-card-cat" id="card-cat-0">교과서 개발</p>
+          <h3 class="project-card-title" id="card-title-0">과학 교과서 개발</h3>
+          <p class="project-card-summary" id="card-summary-0">교육과정 기반 개념 위계를 설계하고, 학습 흐름 중심으로 교과서를 개발한 프로젝트</p>
+          <div class="tags" id="card-tags-0">
+            <span class="tag">교과서 개발</span><span class="tag">물리학</span>
+            <span class="tag">교육과정</span><span class="tag">학습 설계</span>
           </div>
           <span class="project-card-arrow">↗</span>
         </a>
-
-        <!-- Project 2 -->
         <a class="project-card reveal" href="./project-2.html" style="transition-delay:.1s">
-          <p class="project-card-cat">디지털 콘텐츠</p>
-          <h3 class="project-card-title">과학 디지털 콘텐츠 개발</h3>
-          <p class="project-card-summary">영상, 인터랙티브 콘텐츠, 디지털 교과서를 학습 흐름에 맞춰 설계한 콘텐츠 개발 프로젝트</p>
-          <div class="tags">
-            <span class="tag">디지털 콘텐츠</span>
-            <span class="tag">영상 기획</span>
-            <span class="tag">스토리보드</span>
-            <span class="tag">UI/UX</span>
+          <p class="project-card-cat" id="card-cat-1">디지털 콘텐츠</p>
+          <h3 class="project-card-title" id="card-title-1">과학 디지털 콘텐츠 개발</h3>
+          <p class="project-card-summary" id="card-summary-1">영상, 인터랙티브 콘텐츠, 디지털 교과서를 학습 흐름에 맞춰 설계한 콘텐츠 개발 프로젝트</p>
+          <div class="tags" id="card-tags-1">
+            <span class="tag">디지털 콘텐츠</span><span class="tag">영상 기획</span>
+            <span class="tag">스토리보드</span><span class="tag">UI/UX</span>
           </div>
           <span class="project-card-arrow">↗</span>
         </a>
-
-        <!-- Project 3 -->
         <a class="project-card reveal" href="./project-3.html" style="transition-delay:.15s">
-          <p class="project-card-cat">수상 / 기획</p>
-          <h3 class="project-card-title">디지털화 기획 경진대회 대상</h3>
-          <p class="project-card-summary">사내 출판의 디지털화를 도모하기 위한 구독형 서비스 및 메타버스 플랫폼 기획안 발표</p>
-          <div class="tags">
-            <span class="tag">기획</span>
-            <span class="tag">메타버스</span>
-            <span class="tag">구독 서비스</span>
-            <span class="tag">수상</span>
+          <p class="project-card-cat" id="card-cat-2">수상 / 기획</p>
+          <h3 class="project-card-title" id="card-title-2">디지털화 기획 경진대회 대상</h3>
+          <p class="project-card-summary" id="card-summary-2">사내 출판의 디지털화를 도모하기 위한 구독형 서비스 및 메타버스 플랫폼 기획안 발표</p>
+          <div class="tags" id="card-tags-2">
+            <span class="tag">기획</span><span class="tag">메타버스</span>
+            <span class="tag">구독 서비스</span><span class="tag">수상</span>
           </div>
           <span class="project-card-arrow">↗</span>
         </a>
-
       </div>
     </div>
   </section>
@@ -148,7 +135,6 @@
         </svg>
       </div>
     </div>
-
     <div class="inner contact-inner">
       <div class="section-header inv reveal">
         <h2 class="section-title">Contact</h2>
@@ -158,31 +144,65 @@
         <div class="reveal" style="transition-delay:.05s">
           <p class="contact-item-label">Email</p>
           <p class="contact-item-value">
-            <a href="mailto:swyang.sci@gmail.com">swyang.sci@gmail.com</a>
+            <a id="contact-email" href="mailto:swyang.sci@gmail.com">swyang.sci@gmail.com</a>
           </p>
         </div>
         <div class="reveal" style="transition-delay:.1s">
           <p class="contact-item-label">Location</p>
-          <p class="contact-item-value">서울, 대한민국</p>
+          <p class="contact-item-value" id="contact-location">서울, 대한민국</p>
         </div>
       </div>
     </div>
   </section>
 
   <footer>
-    <p>© 2025 양승우 — Science Content Planner</p>
+    <p id="footer-text">© 2025 양승우 — Science Content Planner</p>
   </footer>
 
   <script>
+    // 스크롤 진행 바
     const bar = document.getElementById('progress-bar');
     window.addEventListener('scroll', () => {
       const total = document.documentElement.scrollHeight - window.innerHeight;
       bar.style.transform = `scaleX(${window.scrollY / total})`;
     });
+    // 스크롤 reveal
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // data.json 로드 및 콘텐츠 업데이트
+    fetch('./data.json?t=' + Date.now())
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d) return;
+        const s = d.site || {};
+        if (s.name)        document.getElementById('nav-logo').textContent = s.name;
+        if (s.heroName)    document.getElementById('hero-name').textContent = s.heroName;
+        if (s.subtitle)    document.getElementById('hero-subtitle').textContent = s.subtitle;
+        if (s.description) document.getElementById('hero-desc').textContent = s.description;
+        if (s.profileImage) document.getElementById('hero-profile').src = s.profileImage;
+        if (s.email) {
+          const el = document.getElementById('contact-email');
+          el.textContent = s.email;
+          el.href = 'mailto:' + s.email;
+        }
+        if (s.location) document.getElementById('contact-location').textContent = s.location;
+        if (s.heroName) document.getElementById('footer-text').textContent = '© 2025 ' + s.heroName + ' — Science Content Planner';
+
+        (d.projects || []).forEach((p, i) => {
+          const catEl = document.getElementById('card-cat-' + i);
+          const titleEl = document.getElementById('card-title-' + i);
+          const summaryEl = document.getElementById('card-summary-' + i);
+          const tagsEl = document.getElementById('card-tags-' + i);
+          if (catEl) catEl.textContent = p.category;
+          if (titleEl) titleEl.textContent = p.title;
+          if (summaryEl) summaryEl.textContent = p.summary;
+          if (tagsEl) tagsEl.innerHTML = (p.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+        });
+      })
+      .catch(() => {});
   </script>
 
 </body>

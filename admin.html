@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>관리자 — 양승우 포트폴리오</title>
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --white: #fafafa; --gray: #f0f0f0;
+      --border: #e0e0e0; --muted: #888; --accent: #0a0a0a;
+      --danger: #c0392b; --success: #27ae60;
+    }
+    body { font-family: 'Pretendard', sans-serif; background: var(--gray); color: var(--black); min-height: 100vh; word-break: keep-all; }
+
+    /* ── Login ── */
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: var(--black);
+    }
+    .login-box {
+      background: var(--white); padding: 52px 48px; width: 100%; max-width: 400px;
+    }
+    .login-logo { font-size: 13px; font-weight: 700; letter-spacing: .1em; margin-bottom: 32px; }
+    .login-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .login-sub { font-size: 13px; color: var(--muted); margin-bottom: 36px; }
+    .login-field { margin-bottom: 16px; }
+    .login-field label { display: block; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; color: var(--muted); }
+    .login-field input { width: 100%; border: 1px solid var(--border); padding: 12px 14px; font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; }
+    .login-field input:focus { border-color: var(--black); }
+    .login-btn { width: 100%; background: var(--black); color: var(--white); border: none; padding: 14px; font-size: 13px; font-weight: 600; letter-spacing: .1em; cursor: pointer; margin-top: 8px; transition: opacity .2s; }
+    .login-btn:hover { opacity: .8; }
+    .login-error { color: var(--danger); font-size: 13px; margin-top: 12px; display: none; }
+
+    /* ── Admin Panel ── */
+    #admin-panel { display: none; min-height: 100vh; }
+
+    /* Top Bar */
+    .admin-topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--black); color: var(--white);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 56px;
+    }
+    .admin-topbar .logo { font-size: 13px; font-weight: 700; letter-spacing: .1em; }
+    .admin-topbar .logo span { opacity: .4; margin-left: 8px; font-weight: 400; }
+    .topbar-actions { display: flex; gap: 12px; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; font-size: 12px; font-weight: 600; letter-spacing: .06em; border: none; cursor: pointer; transition: opacity .2s; font-family: inherit; }
+    .btn:hover { opacity: .8; }
+    .btn-deploy { background: #fff; color: var(--black); }
+    .btn-logout { background: transparent; color: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.2); }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-secondary { background: var(--gray); color: var(--black); border: 1px solid var(--border); }
+    .btn-sm { padding: 5px 12px; font-size: 11px; }
+
+    /* Status bar */
+    #status-bar {
+      background: var(--success); color: #fff; text-align: center;
+      padding: 10px; font-size: 13px; font-weight: 600; display: none;
+    }
+    #status-bar.error { background: var(--danger); }
+    #status-bar.loading { background: #555; }
+
+    /* GitHub token section */
+    .token-section {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 16px 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .token-section label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+    .token-section input { flex: 1; min-width: 260px; border: 1px solid var(--border); padding: 8px 12px; font-size: 13px; font-family: inherit; outline: none; }
+    .token-section input:focus { border-color: var(--black); }
+    .token-section .token-note { font-size: 12px; color: var(--muted); }
+
+    /* Tabs */
+    .admin-tabs {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      display: flex; padding: 0 32px; gap: 4px;
+    }
+    .tab-btn {
+      padding: 14px 20px; font-size: 12px; font-weight: 600; letter-spacing: .06em;
+      border: none; background: transparent; cursor: pointer; color: var(--muted);
+      border-bottom: 2px solid transparent; transition: color .2s, border-color .2s;
+      font-family: inherit;
+    }
+    .tab-btn.active { color: var(--black); border-bottom-color: var(--black); }
+
+    /* Content */
+    .admin-content { padding: 32px; max-width: 900px; margin: 0 auto; }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Form elements */
+    .form-section { background: var(--white); border: 1px solid var(--border); margin-bottom: 24px; }
+    .form-section-header {
+      padding: 18px 24px; border-bottom: 1px solid var(--border);
+      font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    }
+    .form-body { padding: 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .form-row.full { grid-template-columns: 1fr; }
+    .form-row:last-child { margin-bottom: 0; }
+    .form-field { display: flex; flex-direction: column; gap: 8px; }
+    .form-field label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .form-field input, .form-field textarea, .form-field select {
+      border: 1px solid var(--border); padding: 10px 12px; font-size: 14px;
+      font-family: inherit; outline: none; transition: border-color .2s; resize: vertical;
+    }
+    .form-field input:focus, .form-field textarea:focus { border-color: var(--black); }
+    .form-field .hint { font-size: 11px; color: var(--muted); }
+
+    /* Image preview */
+    .img-field { display: flex; flex-direction: column; gap: 12px; }
+    .img-preview-wrap {
+      width: 100%; aspect-ratio: 16/9; background: var(--gray); overflow: hidden;
+      display: flex; align-items: center; justify-content: center; border: 1px solid var(--border);
+    }
+    .img-preview-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    .img-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .img-actions input[type="file"] { display: none; }
+    .img-actions input[type="text"] { flex: 1; border: 1px solid var(--border); padding: 8px 10px; font-size: 13px; font-family: inherit; min-width: 180px; }
+    .img-uploading { font-size: 12px; color: var(--muted); }
+
+    /* Tags */
+    .tags-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag-chip {
+      background: var(--gray); border: 1px solid var(--border); padding: 4px 10px;
+      font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 6px;
+    }
+    .tag-chip button { background: none; border: none; cursor: pointer; font-size: 14px; color: var(--muted); line-height: 1; }
+    .tags-add { display: flex; gap: 8px; margin-top: 8px; }
+    .tags-add input { flex: 1; border: 1px solid var(--border); padding: 7px 10px; font-size: 13px; font-family: inherit; }
+    .tags-add button { background: var(--black); color: var(--white); border: none; padding: 7px 16px; font-size: 12px; cursor: pointer; font-family: inherit; }
+
+    /* Sections editor */
+    .section-card {
+      border: 1px solid var(--border); margin-bottom: 16px; background: var(--gray);
+    }
+    .section-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; background: var(--white); border-bottom: 1px solid var(--border);
+      cursor: pointer; user-select: none;
+    }
+    .section-card-header input {
+      border: none; background: transparent; font-size: 14px; font-weight: 600;
+      font-family: inherit; flex: 1; outline: none;
+    }
+    .section-card-header input:focus { background: #f5f5f5; padding: 2px 6px; }
+    .section-card-body { padding: 16px; }
+    .items-list { list-style: none; }
+    .item-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .item-row input { flex: 1; border: 1px solid var(--border); padding: 8px 10px; font-size: 13px; font-family: inherit; outline: none; background: var(--white); }
+    .item-row input:focus { border-color: var(--black); }
+    .item-row button { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 18px; line-height: 1; }
+    .item-row button:hover { color: var(--danger); }
+    .add-item-btn {
+      background: none; border: 1px dashed var(--border); width: 100%; padding: 8px;
+      font-size: 12px; color: var(--muted); cursor: pointer; font-family: inherit;
+      transition: border-color .2s, color .2s;
+    }
+    .add-item-btn:hover { border-color: var(--black); color: var(--black); }
+
+    /* Subsection */
+    .subsection-card {
+      border: 1px solid var(--border); margin-bottom: 12px; background: var(--white);
+    }
+    .subsection-header { padding: 10px 14px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); }
+    .subsection-header input { flex: 1; border: none; background: transparent; font-size: 13px; font-weight: 600; font-family: inherit; outline: none; }
+    .subsection-body { padding: 12px 14px; }
+
+    /* Section type toggle */
+    .section-type-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
+    .section-type-toggle button {
+      padding: 5px 14px; font-size: 11px; font-family: inherit; cursor: pointer;
+      border: 1px solid var(--border); background: var(--white); color: var(--muted);
+    }
+    .section-type-toggle button.active { background: var(--black); color: var(--white); border-color: var(--black); }
+
+    /* Add/Remove buttons */
+    .add-section-btn {
+      width: 100%; padding: 12px; border: 2px dashed var(--border); background: transparent;
+      font-size: 13px; color: var(--muted); cursor: pointer; font-family: inherit;
+      transition: all .2s; margin-top: 8px;
+    }
+    .add-section-btn:hover { border-color: var(--black); color: var(--black); }
+
+    /* Preview link */
+    .preview-links { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+    .preview-link {
+      font-size: 12px; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--border);
+      transition: color .2s;
+    }
+    .preview-link:hover { color: var(--black); }
+
+    /* Deploy modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.85);
+      z-index: 500; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: var(--white); padding: 40px; max-width: 480px; width: 90%; }
+    .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+    .modal-desc { font-size: 14px; color: var(--muted); margin-bottom: 24px; line-height: 1.7; }
+    .modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
+
+    @media (max-width: 640px) {
+      .admin-content { padding: 16px; }
+      .form-row { grid-template-columns: 1fr; }
+      .admin-topbar { padding: 0 16px; }
+      .admin-tabs { padding: 0 16px; }
+      .token-section { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Login Screen ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <p class="login-logo">YANG. <span style="opacity:.4;font-weight:400;">Portfolio</span></p>
+    <h1 class="login-title">관리자 로그인</h1>
+    <p class="login-sub">관리자 계정으로 로그인하세요</p>
+    <form id="login-form" onsubmit="doLogin(event)">
+      <div class="login-field">
+        <label>아이디</label>
+        <input type="text" id="login-id" placeholder="ID" autocomplete="username" />
+      </div>
+      <div class="login-field">
+        <label>비밀번호</label>
+        <input type="password" id="login-pw" placeholder="Password" autocomplete="current-password" />
+      </div>
+      <button type="submit" class="login-btn">로그인</button>
+      <p class="login-error" id="login-error">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ── Admin Panel ── -->
+<div id="admin-panel">
+
+  <div class="admin-topbar">
+    <div class="logo">YANG. <span>관리자 페이지</span></div>
+    <div class="topbar-actions">
+      <button class="btn btn-deploy" onclick="openDeployModal()">🚀 GitHub 배포</button>
+      <button class="btn btn-logout" onclick="doLogout()">로그아웃</button>
+    </div>
+  </div>
+
+  <div id="status-bar"></div>
+
+  <!-- GitHub Token -->
+  <div class="token-section">
+    <label>GitHub Token</label>
+    <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxx (배포 시 필요)" />
+    <span class="token-note">레포: ysw906/SCeditor-yang (master) · 탭 닫으면 자동 삭제됨</span>
+  </div>
+
+  <!-- Tabs -->
+  <div class="admin-tabs">
+    <button class="tab-btn active" onclick="showTab('info')">기본 정보</button>
+    <button class="tab-btn" onclick="showTab('p0')">프로젝트 1</button>
+    <button class="tab-btn" onclick="showTab('p1')">프로젝트 2</button>
+    <button class="tab-btn" onclick="showTab('p2')">프로젝트 3</button>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- Preview links -->
+    <div class="preview-links">
+      <a class="preview-link" href="./index.html" target="_blank">↗ 메인 페이지 미리보기</a>
+      <a class="preview-link" href="./project-1.html" target="_blank">↗ 프로젝트 1</a>
+      <a class="preview-link" href="./project-2.html" target="_blank">↗ 프로젝트 2</a>
+      <a class="preview-link" href="./project-3.html" target="_blank">↗ 프로젝트 3</a>
+    </div>
+
+    <!-- ── Tab: 기본 정보 ── -->
+    <div class="tab-pane active" id="tab-info">
+
+      <div class="form-section">
+        <div class="form-section-header">사이트 기본 정보</div>
+        <div class="form-body">
+          <div class="form-row">
+            <div class="form-field">
+              <label>로고 텍스트</label>
+              <input type="text" id="site-name" />
+            </div>
+            <div class="form-field">
+              <label>직함 (영문)</label>
+              <input type="text" id="site-subtitle" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>이름</label>
+              <input type="text" id="site-heroName" />
+            </div>
+          </div>
+          <div class="form-row full">
+            <div class="form-field">
+              <label>소개 문구</label>
+              <textarea id="site-description" rows="4"></textarea>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>이메일</label>
+              <input type="email" id="site-email" />
+            </div>
+            <div class="form-field">
+              <label>위치</label>
+              <input type="text" id="site-location" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-header">프로필 사진</div>
+        <div class="form-body">
+          <div class="img-field">
+            <div class="img-preview-wrap">
+              <img id="profile-preview" src="" alt="프로필 사진" style="filter:grayscale(100%)" />
+            </div>
+            <div class="img-actions">
+              <button class="btn btn-secondary btn-sm" onclick="document.getElementById('profile-upload').click()">📁 이미지 변경</button>
+              <input type="file" id="profile-upload" accept="image/*" onchange="handleImageUpload(this,'profile','site')" />
+              <span class="img-uploading" id="profile-uploading"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Tab: 프로젝트 N (동적 생성) ── -->
+    <div class="tab-pane" id="tab-p0"></div>
+    <div class="tab-pane" id="tab-p1"></div>
+    <div class="tab-pane" id="tab-p2"></div>
+
+  </div>
+</div>
+
+<!-- ── Deploy Modal ── -->
+<div class="modal-overlay" id="deploy-modal">
+  <div class="modal-box">
+    <h2 class="modal-title">GitHub에 배포</h2>
+    <p class="modal-desc">
+      현재 편집한 내용을 <strong>data.json</strong> 파일로 GitHub에 저장합니다.<br/>
+      저장 후 Cloudflare Pages가 자동으로 배포됩니다.<br/><br/>
+      GitHub Token이 입력되어 있어야 합니다.
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeDeployModal()">취소</button>
+      <button class="btn btn-deploy" style="background:var(--black);color:#fff;" onclick="deployToGitHub()">저장 & 배포</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════ */
+let state = { site: {}, projects: [] };
+
+const REPO  = 'ysw906/SCeditor-yang';
+const BRANCH = 'master';
+
+/* ══════════════════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════════════════ */
+function doLogin(e) {
+  e.preventDefault();
+  const id = document.getElementById('login-id').value.trim();
+  const pw = document.getElementById('login-pw').value;
+  if (id === 'sample' && pw === 'sample') {
+    sessionStorage.setItem('admin_auth', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('admin_auth');
+  location.reload();
+}
+
+/* ══════════════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════════════ */
+function showTab(id) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+/* ══════════════════════════════════════════════════════
+   LOAD DATA
+══════════════════════════════════════════════════════ */
+async function loadData() {
+  try {
+    const r = await fetch('./data.json?t=' + Date.now());
+    state = await r.json();
+  } catch (_) {
+    showStatus('data.json 로딩 실패 — 기본값 사용', 'error');
+  }
+  populateForms();
+}
+
+/* ══════════════════════════════════════════════════════
+   POPULATE FORMS
+══════════════════════════════════════════════════════ */
+function populateForms() {
+  const s = state.site || {};
+  setValue('site-name', s.name);
+  setValue('site-heroName', s.heroName);
+  setValue('site-subtitle', s.subtitle);
+  setValue('site-description', s.description);
+  setValue('site-email', s.email);
+  setValue('site-location', s.location);
+  if (s.profileImage) document.getElementById('profile-preview').src = s.profileImage;
+
+  (state.projects || []).forEach((p, i) => {
+    document.getElementById('tab-p' + i).innerHTML = buildProjectForm(p, i);
+    renderTags(i, p.tags || []);
+    renderSections(i, p.sections || []);
+    if (p.image) document.getElementById('proj-img-' + i).src = p.image;
+  });
+}
+
+function setValue(id, val) {
+  const el = document.getElementById(id);
+  if (el && val !== undefined) el.value = val;
+}
+
+/* ══════════════════════════════════════════════════════
+   PROJECT FORM BUILDER
+══════════════════════════════════════════════════════ */
+function buildProjectForm(p, i) {
+  return `
+    <div class="form-section">
+      <div class="form-section-header">프로젝트 ${i+1} 기본 정보</div>
+      <div class="form-body">
+        <div class="form-row">
+          <div class="form-field">
+            <label>카테고리</label>
+            <input type="text" id="p${i}-category" value="${esc(p.category)}" />
+          </div>
+          <div class="form-field">
+            <label>제목</label>
+            <input type="text" id="p${i}-title" value="${esc(p.title)}" />
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-field">
+            <label>요약</label>
+            <textarea id="p${i}-summary" rows="3">${esc(p.summary)}</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-header">태그</div>
+      <div class="form-body">
+        <div class="tags-wrap" id="tags-wrap-${i}"></div>
+        <div class="tags-add">
+          <input type="text" id="tags-input-${i}" placeholder="태그 입력 후 추가" onkeydown="if(event.key==='Enter'){event.preventDefault();addTag(${i})}" />
+          <button onclick="addTag(${i})">추가</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-header">대표 이미지</div>
+      <div class="form-body">
+        <div class="img-field">
+          <div class="img-preview-wrap">
+            <img id="proj-img-${i}" src="" alt="프로젝트 이미지" />
+          </div>
+          <div class="img-actions">
+            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('proj-upload-${i}').click()">📁 이미지 변경</button>
+            <input type="file" id="proj-upload-${i}" accept="image/*" onchange="handleImageUpload(this,${i},'project')" />
+            <span class="img-uploading" id="proj-uploading-${i}"></span>
+          </div>
+          <div class="form-field">
+            <label>이미지 캡션</label>
+            <input type="text" id="p${i}-imageCaption" value="${esc(p.imageCaption)}" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-header">본문 섹션</div>
+      <div class="form-body">
+        <div id="sections-${i}"></div>
+        <button class="add-section-btn" onclick="addSection(${i})">+ 섹션 추가</button>
+      </div>
+    </div>
+  `;
+}
+
+function esc(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ══════════════════════════════════════════════════════
+   TAGS
+══════════════════════════════════════════════════════ */
+function renderTags(pi, tags) {
+  const wrap = document.getElementById('tags-wrap-' + pi);
+  if (!wrap) return;
+  wrap.innerHTML = tags.map((t, ti) =>
+    `<span class="tag-chip">${esc(t)}<button onclick="removeTag(${pi},${ti})" title="삭제">×</button></span>`
+  ).join('');
+  state.projects[pi].tags = tags;
+}
+
+function addTag(pi) {
+  const input = document.getElementById('tags-input-' + pi);
+  const val = input.value.trim();
+  if (!val) return;
+  const tags = [...(state.projects[pi].tags || []), val];
+  renderTags(pi, tags);
+  input.value = '';
+}
+
+function removeTag(pi, ti) {
+  const tags = (state.projects[pi].tags || []).filter((_, i) => i !== ti);
+  renderTags(pi, tags);
+}
+
+/* ══════════════════════════════════════════════════════
+   SECTIONS
+══════════════════════════════════════════════════════ */
+function renderSections(pi, sections) {
+  const container = document.getElementById('sections-' + pi);
+  if (!container) return;
+  container.innerHTML = '';
+  sections.forEach((sec, si) => {
+    container.appendChild(buildSectionCard(pi, si, sec));
+  });
+}
+
+function buildSectionCard(pi, si, sec) {
+  const div = document.createElement('div');
+  div.className = 'section-card';
+  div.id = `sec-${pi}-${si}`;
+
+  const hasSubSections = !!(sec.subSections && sec.subSections.length);
+
+  div.innerHTML = `
+    <div class="section-card-header">
+      <input type="text" id="sec-heading-${pi}-${si}" value="${esc(sec.heading)}" placeholder="섹션 제목" />
+      <button class="btn btn-secondary btn-sm" style="margin-left:12px" onclick="removeSection(${pi},${si})">삭제</button>
+    </div>
+    <div class="section-card-body">
+      <div class="section-type-toggle">
+        <button id="type-items-${pi}-${si}" onclick="setSectionType(${pi},${si},'items')" ${!hasSubSections?'class="active"':''}>항목 목록</button>
+        <button id="type-subs-${pi}-${si}"  onclick="setSectionType(${pi},${si},'subSections')" ${hasSubSections?'class="active"':''}>소제목별 항목</button>
+      </div>
+      <div id="sec-items-body-${pi}-${si}" ${hasSubSections?'style="display:none"':''}>
+        <ul class="items-list" id="items-list-${pi}-${si}"></ul>
+        <button class="add-item-btn" onclick="addItem(${pi},${si})">+ 항목 추가</button>
+      </div>
+      <div id="sec-subs-body-${pi}-${si}" ${!hasSubSections?'style="display:none"':''}>
+        <div id="subsections-${pi}-${si}"></div>
+        <button class="add-item-btn" onclick="addSubSection(${pi},${si})">+ 소제목 추가</button>
+      </div>
+    </div>
+  `;
+
+  // Render items
+  const itemsList = div.querySelector(`#items-list-${pi}-${si}`);
+  (sec.items || []).forEach((item, ii) => {
+    itemsList.appendChild(buildItemRow(pi, si, ii, item));
+  });
+
+  // Render subsections
+  const subsContainer = div.querySelector(`#subsections-${pi}-${si}`);
+  (sec.subSections || []).forEach((sub, subi) => {
+    subsContainer.appendChild(buildSubSectionCard(pi, si, subi, sub));
+  });
+
+  return div;
+}
+
+function buildItemRow(pi, si, ii, value) {
+  const row = document.createElement('li');
+  row.className = 'item-row';
+  row.id = `item-row-${pi}-${si}-${ii}`;
+  row.innerHTML = `
+    <input type="text" id="item-${pi}-${si}-${ii}" value="${esc(value)}" placeholder="항목 내용" />
+    <button onclick="removeItem(${pi},${si},${ii})" title="삭제">×</button>
+  `;
+  return row;
+}
+
+function buildSubSectionCard(pi, si, subi, sub) {
+  const div = document.createElement('div');
+  div.className = 'subsection-card';
+  div.id = `subsec-${pi}-${si}-${subi}`;
+  div.innerHTML = `
+    <div class="subsection-header">
+      <input type="text" id="sub-title-${pi}-${si}-${subi}" value="${esc(sub.title)}" placeholder="소제목" />
+      <button class="btn btn-secondary btn-sm" onclick="removeSubSection(${pi},${si},${subi})">삭제</button>
+    </div>
+    <div class="subsection-body">
+      <ul class="items-list" id="sub-items-${pi}-${si}-${subi}"></ul>
+      <button class="add-item-btn" onclick="addSubItem(${pi},${si},${subi})">+ 항목 추가</button>
+    </div>
+  `;
+  const list = div.querySelector(`#sub-items-${pi}-${si}-${subi}`);
+  (sub.items || []).forEach((item, ii) => {
+    const row = document.createElement('li');
+    row.className = 'item-row';
+    row.id = `subitem-row-${pi}-${si}-${subi}-${ii}`;
+    row.innerHTML = `
+      <input type="text" id="subitem-${pi}-${si}-${subi}-${ii}" value="${esc(item)}" placeholder="항목 내용" />
+      <button onclick="removeSubItem(${pi},${si},${subi},${ii})">×</button>
+    `;
+    list.appendChild(row);
+  });
+  return div;
+}
+
+function setSectionType(pi, si, type) {
+  document.getElementById(`sec-items-body-${pi}-${si}`).style.display = type==='items' ? '' : 'none';
+  document.getElementById(`sec-subs-body-${pi}-${si}`).style.display  = type==='subSections' ? '' : 'none';
+  document.getElementById(`type-items-${pi}-${si}`).className = type==='items' ? 'active' : '';
+  document.getElementById(`type-subs-${pi}-${si}`).className  = type==='subSections' ? 'active' : '';
+}
+
+function addSection(pi) {
+  const sections = collectSections(pi);
+  sections.push({ heading: '새 섹션', items: [''] });
+  renderSections(pi, sections);
+}
+
+function removeSection(pi, si) {
+  if (!confirm('이 섹션을 삭제할까요?')) return;
+  const sections = collectSections(pi);
+  sections.splice(si, 1);
+  renderSections(pi, sections);
+}
+
+function addItem(pi, si) {
+  const list = document.getElementById(`items-list-${pi}-${si}`);
+  const ii = list.children.length;
+  list.appendChild(buildItemRow(pi, si, ii, ''));
+}
+
+function removeItem(pi, si, ii) {
+  const row = document.getElementById(`item-row-${pi}-${si}-${ii}`);
+  if (row) row.remove();
+  reindexItems(pi, si);
+}
+
+function reindexItems(pi, si) {
+  const list = document.getElementById(`items-list-${pi}-${si}`);
+  if (!list) return;
+  [...list.children].forEach((row, i) => {
+    row.id = `item-row-${pi}-${si}-${i}`;
+    const input = row.querySelector('input');
+    if (input) input.id = `item-${pi}-${si}-${i}`;
+    const btn = row.querySelector('button');
+    if (btn) btn.setAttribute('onclick', `removeItem(${pi},${si},${i})`);
+  });
+}
+
+function addSubSection(pi, si) {
+  const container = document.getElementById(`subsections-${pi}-${si}`);
+  const subi = container.children.length;
+  container.appendChild(buildSubSectionCard(pi, si, subi, { title: '소제목', items: [''] }));
+}
+
+function removeSubSection(pi, si, subi) {
+  const card = document.getElementById(`subsec-${pi}-${si}-${subi}`);
+  if (card) card.remove();
+}
+
+function addSubItem(pi, si, subi) {
+  const list = document.getElementById(`sub-items-${pi}-${si}-${subi}`);
+  const ii = list.children.length;
+  const row = document.createElement('li');
+  row.className = 'item-row';
+  row.id = `subitem-row-${pi}-${si}-${subi}-${ii}`;
+  row.innerHTML = `
+    <input type="text" id="subitem-${pi}-${si}-${subi}-${ii}" value="" placeholder="항목 내용" />
+    <button onclick="removeSubItem(${pi},${si},${subi},${ii})">×</button>
+  `;
+  list.appendChild(row);
+}
+
+function removeSubItem(pi, si, subi, ii) {
+  const row = document.getElementById(`subitem-row-${pi}-${si}-${subi}-${ii}`);
+  if (row) row.remove();
+}
+
+/* ══════════════════════════════════════════════════════
+   IMAGE UPLOAD
+══════════════════════════════════════════════════════ */
+async function handleImageUpload(input, idx, type) {
+  const file = input.files[0];
+  if (!file) return;
+  const token = document.getElementById('github-token').value.trim();
+
+  if (!token) {
+    alert('이미지를 GitHub에 업로드하려면 GitHub Token을 먼저 입력하세요.');
+    input.value = '';
+    return;
+  }
+
+  const statusEl = document.getElementById(type === 'site' ? 'profile-uploading' : `proj-uploading-${idx}`);
+  statusEl.textContent = '업로드 중...';
+
+  const ext = file.name.split('.').pop();
+  const repoPath = `images/${type === 'site' ? 'profile' : 'project-' + (idx+1)}-${Date.now()}.${ext}`;
+
+  const buf = await file.arrayBuffer();
+  const base64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+
+  const existing = await getFileSha(token, repoPath);
+  const body = { message: `Upload image ${repoPath}`, content: base64 };
+  if (existing) body.sha = existing;
+
+  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${repoPath}`, {
+    method: 'PUT',
+    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+
+  if (res.ok) {
+    statusEl.textContent = '업로드 완료!';
+    setTimeout(() => { statusEl.textContent = ''; }, 3000);
+    const imgEl = document.getElementById(type === 'site' ? 'profile-preview' : `proj-img-${idx}`);
+    const reader = new FileReader();
+    reader.onload = e => { imgEl.src = e.target.result; };
+    reader.readAsDataURL(file);
+    // Update state with new path
+    if (type === 'site') state.site.profileImage = repoPath;
+    else state.projects[idx].image = repoPath;
+  } else {
+    statusEl.textContent = '업로드 실패';
+    console.error(await res.json());
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   COLLECT STATE FROM FORMS
+══════════════════════════════════════════════════════ */
+function collectState() {
+  state.site.name        = document.getElementById('site-name')?.value || state.site.name;
+  state.site.heroName    = document.getElementById('site-heroName')?.value || state.site.heroName;
+  state.site.subtitle    = document.getElementById('site-subtitle')?.value || state.site.subtitle;
+  state.site.description = document.getElementById('site-description')?.value || state.site.description;
+  state.site.email       = document.getElementById('site-email')?.value || state.site.email;
+  state.site.location    = document.getElementById('site-location')?.value || state.site.location;
+
+  state.projects.forEach((p, pi) => {
+    p.category     = document.getElementById(`p${pi}-category`)?.value ?? p.category;
+    p.title        = document.getElementById(`p${pi}-title`)?.value ?? p.title;
+    p.summary      = document.getElementById(`p${pi}-summary`)?.value ?? p.summary;
+    p.imageCaption = document.getElementById(`p${pi}-imageCaption`)?.value ?? p.imageCaption;
+    p.sections     = collectSections(pi);
+  });
+
+  return state;
+}
+
+function collectSections(pi) {
+  const container = document.getElementById(`sections-${pi}`);
+  if (!container) return state.projects[pi]?.sections || [];
+  const cards = container.querySelectorAll('.section-card');
+  return [...cards].map((card, si) => {
+    const heading = document.getElementById(`sec-heading-${pi}-${si}`)?.value || '';
+    const isItems = document.getElementById(`sec-items-body-${pi}-${si}`)?.style.display !== 'none';
+    if (isItems) {
+      const list = document.getElementById(`items-list-${pi}-${si}`);
+      const items = list ? [...list.querySelectorAll('input')].map(i => i.value).filter(Boolean) : [];
+      return { heading, items };
+    } else {
+      const subsContainer = document.getElementById(`subsections-${pi}-${si}`);
+      const subSections = subsContainer ? [...subsContainer.querySelectorAll('.subsection-card')].map((subCard, subi) => {
+        const title = document.getElementById(`sub-title-${pi}-${si}-${subi}`)?.value || '';
+        const subList = document.getElementById(`sub-items-${pi}-${si}-${subi}`);
+        const items = subList ? [...subList.querySelectorAll('input')].map(i => i.value).filter(Boolean) : [];
+        return { title, items };
+      }) : [];
+      return { heading, subSections };
+    }
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   GITHUB DEPLOY
+══════════════════════════════════════════════════════ */
+function openDeployModal() {
+  document.getElementById('deploy-modal').classList.add('open');
+}
+function closeDeployModal() {
+  document.getElementById('deploy-modal').classList.remove('open');
+}
+
+async function getFileSha(token, path) {
+  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    headers: { 'Authorization': `token ${token}` }
+  });
+  if (!res.ok) return null;
+  const j = await res.json();
+  return j.sha || null;
+}
+
+async function deployToGitHub() {
+  const token = document.getElementById('github-token').value.trim();
+  if (!token) { alert('GitHub Token을 입력해주세요.'); return; }
+
+  closeDeployModal();
+  showStatus('GitHub에 저장 중...', 'loading');
+
+  const data = collectState();
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+
+  const existingSha = await getFileSha(token, 'data.json');
+  const body = { message: 'Update portfolio content via admin panel', content };
+  if (existingSha) body.sha = existingSha;
+  body.branch = BRANCH;
+
+  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/data.json`, {
+    method: 'PUT',
+    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+
+  if (res.ok) {
+    showStatus('✅ GitHub 배포 완료! Cloudflare Pages 배포가 시작됩니다.', 'success');
+    setTimeout(() => hideStatus(), 5000);
+  } else {
+    const err = await res.json();
+    showStatus('❌ 배포 실패: ' + (err.message || JSON.stringify(err)), 'error');
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   STATUS BAR
+══════════════════════════════════════════════════════ */
+function showStatus(msg, type) {
+  const bar = document.getElementById('status-bar');
+  bar.textContent = msg;
+  bar.className = type || '';
+  bar.style.display = 'block';
+}
+function hideStatus() {
+  document.getElementById('status-bar').style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  // Token from sessionStorage
+  const savedToken = sessionStorage.getItem('gh_token');
+  if (savedToken) document.getElementById('github-token').value = savedToken;
+  document.getElementById('github-token').addEventListener('change', e => {
+    sessionStorage.setItem('gh_token', e.target.value);
+  });
+
+  // Auto-login if session active
+  if (sessionStorage.getItem('admin_auth') === '1') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    loadData();
+  }
+});
+</script>
+
+</body>
+</html>
