@@ -7,104 +7,136 @@
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body class="detail-page">
-  <div id="progress-bar"></div>
-  <nav>
-    <a class="logo" href="./index.html" id="nav-logo">YANG.</a>
-    <ul>
-      <li><a href="./index.html#projects">Projects</a></li>
-      <li><a href="./index.html#contact">Contact</a></li>
-    </ul>
-  </nav>
+<div id="progress-bar"></div>
 
-  <section class="detail-hero">
-    <div class="detail-hero-inner">
-      <a class="detail-back" href="./index.html">Projects로 돌아가기</a>
-      <p class="detail-cat" id="detail-cat">교과서 개발</p>
-      <h1 class="detail-title" id="detail-title">과학 교과서 개발</h1>
-      <p class="detail-summary" id="detail-summary">교육과정 기반 개념 위계를 설계하고, 학습 흐름 중심으로 교과서를 개발한 프로젝트</p>
-      <div class="detail-tags tags" id="detail-tags">
-        <span class="tag dark">교과서 개발</span><span class="tag dark">물리학</span>
-        <span class="tag dark">교육과정</span><span class="tag dark">학습 설계</span>
+<nav id="nav">
+  <a class="logo" href="./index.html" id="nav-logo">YANG.</a>
+  <ul>
+    <li><a href="./index.html#projects">Projects</a></li>
+    <li><a href="./index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="detail-hero">
+  <div class="detail-hero-blob"></div>
+  <div class="detail-hero-inner">
+    <a class="detail-back" href="./index.html">← Projects로 돌아가기</a>
+    <p class="detail-cat-badge" id="detail-cat">교과서 개발</p>
+    <h1 class="detail-title" id="detail-title">과학 교과서 개발</h1>
+    <p class="detail-summary" id="detail-summary">교육과정 기반 개념 위계를 설계하고, 학습 흐름 중심으로 교과서를 개발한 프로젝트</p>
+    <div class="detail-tags" id="detail-tags">
+      <span class="tag">교과서 개발</span><span class="tag">물리학</span>
+      <span class="tag">교육과정</span><span class="tag">학습 설계</span>
+    </div>
+  </div>
+</section>
+
+<section class="detail-image-section">
+  <div class="detail-image-inner reveal">
+    <img id="detail-img" src="./images/textbook-cover.jpg" alt="과학 교과서 개발" />
+    <p class="detail-image-caption" id="detail-caption">비상교육 과학 교과서 (2022 개정)</p>
+  </div>
+</section>
+
+<section class="detail-body">
+  <div class="detail-body-inner" id="detail-sections">
+    <div class="detail-section reveal">
+      <p class="detail-section-heading">프로젝트 개요</p>
+      <ul>
+        <li>고등: 물리학Ⅰ, 물리학Ⅱ, 통합과학, 과학탐구실험</li>
+        <li>초등: 과학 교과서 개발 (국정·검정)</li>
+      </ul>
+    </div>
+    <div class="detail-section reveal" style="transition-delay:.05s">
+      <p class="detail-section-heading">핵심 기획</p>
+      <div class="detail-subsection">
+        <p class="detail-subsection-title">1. 개념 위계 기반 구조 설계</p>
+        <ul><li>성취기준 및 단원 간 연결 구조 설계</li><li>개념 간 흐름이 끊기지 않도록 구성</li></ul>
+      </div>
+      <div class="detail-subsection">
+        <p class="detail-subsection-title">2. 학습 흐름 설계</p>
+        <ul><li>대단원: 흥미 → 활동 → 개념 → 적용</li><li>소단원: 동일 구조 반복 적용</li></ul>
+      </div>
+      <div class="detail-subsection">
+        <p class="detail-subsection-title">3. 시각적 학습 경험 강화</p>
+        <ul><li>복잡한 개념을 시각적으로 단순화</li><li>학습 몰입을 위한 편집 구조 설계</li></ul>
       </div>
     </div>
-  </section>
-
-  <section class="detail-image-section">
-    <div class="detail-image-inner">
-      <img id="detail-img" src="./images/textbook-cover.jpg" alt="대표 이미지" />
-      <p class="detail-image-caption" id="detail-caption">비상교육 과학 교과서 3~4학년 (2022 개정)</p>
+    <div class="detail-section reveal" style="transition-delay:.1s">
+      <p class="detail-section-heading">나의 역할</p>
+      <ul>
+        <li>교과서 콘텐츠 기획 및 구조 설계</li>
+        <li>학습 흐름 설계</li>
+        <li>편집 방향 기획</li>
+      </ul>
     </div>
-  </section>
-
-  <section class="detail-body">
-    <div class="detail-body-inner" id="detail-sections">
-      <div class="detail-section">
-        <p class="detail-section-heading">프로젝트 개요</p>
-        <ul><li>고등: 물리학Ⅰ, 물리학Ⅱ, 통합과학, 과학탐구실험</li><li>초등: 과학 교과서 개발 (국정·검정)</li></ul>
-      </div>
-      <div class="detail-section">
-        <p class="detail-section-heading">핵심 기획</p>
-        <div class="detail-subsection"><p class="detail-subsection-title">1. 개념 위계 기반 구조 설계</p><ul><li>성취기준 및 단원 간 연결 구조 설계</li><li>개념 간 흐름이 끊기지 않도록 구성</li></ul></div>
-        <div class="detail-subsection"><p class="detail-subsection-title">2. 학습 흐름 설계</p><ul><li>대단원: 흥미 → 활동 → 개념 → 적용</li><li>소단원: 동일 구조 반복 적용</li></ul></div>
-        <div class="detail-subsection"><p class="detail-subsection-title">3. 시각적 학습 경험 강화</p><ul><li>복잡한 개념을 시각적으로 단순화</li><li>학습 몰입을 위한 편집 구조 설계</li></ul></div>
-      </div>
-      <div class="detail-section">
-        <p class="detail-section-heading">나의 역할</p>
-        <ul><li>교과서 콘텐츠 기획 및 구조 설계</li><li>학습 흐름 설계</li><li>편집 방향 기획</li></ul>
-      </div>
-      <div class="detail-section">
-        <p class="detail-section-heading">핵심 역량</p>
-        <ul><li>교육과정 해석 능력</li><li>개념 구조화 능력</li><li>학습 경험 설계</li></ul>
-      </div>
+    <div class="detail-section reveal" style="transition-delay:.15s">
+      <p class="detail-section-heading">핵심 역량</p>
+      <ul>
+        <li>교육과정 해석 능력</li>
+        <li>개념 구조화 능력</li>
+        <li>학습 경험 설계</li>
+      </ul>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer><p id="footer-text">© 2025 양승우 — Science Content Planner</p></footer>
+<footer>
+  <p id="footer-text">© 2025 양승우 — Science Content Planner</p>
+  <a href="./admin.html" class="footer-admin-link">관리자</a>
+</footer>
 
-  <script>
-    const bar = document.getElementById('progress-bar');
-    window.addEventListener('scroll', () => {
-      const total = document.documentElement.scrollHeight - window.innerHeight;
-      bar.style.transform = `scaleX(${window.scrollY / total})`;
-    });
+<script>
+const bar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  if (total > 0) bar.style.transform = `scaleX(${Math.min(window.scrollY / total, 1)})`;
+});
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), { passive: true });
 
-    function renderSections(sections) {
-      const container = document.getElementById('detail-sections');
-      container.innerHTML = sections.map(sec => {
-        if (sec.subSections && sec.subSections.length) {
-          return `<div class="detail-section">
-            <p class="detail-section-heading">${sec.heading}</p>
-            ${sec.subSections.map(sub => `
-              <div class="detail-subsection">
-                <p class="detail-subsection-title">${sub.title}</p>
-                <ul>${(sub.items||[]).map(i=>`<li>${i}</li>`).join('')}</ul>
-              </div>`).join('')}
-          </div>`;
-        }
-        return `<div class="detail-section">
-          <p class="detail-section-heading">${sec.heading}</p>
-          <ul>${(sec.items||[]).map(i=>`<li>${i}</li>`).join('')}</ul>
-        </div>`;
-      }).join('');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+function renderSections(sections) {
+  const container = document.getElementById('detail-sections');
+  container.innerHTML = sections.map((sec, i) => {
+    const delay = (i * 0.05).toFixed(2);
+    if (sec.subSections && sec.subSections.length) {
+      return `<div class="detail-section reveal" style="transition-delay:${delay}s">
+        <p class="detail-section-heading">${sec.heading}</p>
+        ${sec.subSections.map(sub => `
+          <div class="detail-subsection">
+            <p class="detail-subsection-title">${sub.title}</p>
+            <ul>${(sub.items||[]).map(it=>`<li>${it}</li>`).join('')}</ul>
+          </div>`).join('')}
+      </div>`;
     }
+    return `<div class="detail-section reveal" style="transition-delay:${delay}s">
+      <p class="detail-section-heading">${sec.heading}</p>
+      <ul>${(sec.items||[]).map(it=>`<li>${it}</li>`).join('')}</ul>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+}
 
-    fetch('./data.json?t=' + Date.now())
-      .then(r => r.ok ? r.json() : null)
-      .then(d => {
-        if (!d) return;
-        if (d.site?.name) document.getElementById('nav-logo').textContent = d.site.name;
-        if (d.site?.heroName) document.getElementById('footer-text').textContent = '© 2025 ' + d.site.heroName + ' — Science Content Planner';
-        const p = (d.projects || [])[0];
-        if (!p) return;
-        document.getElementById('detail-cat').textContent = p.category || '';
-        document.getElementById('detail-title').textContent = p.title || '';
-        document.getElementById('detail-summary').textContent = p.summary || '';
-        document.getElementById('detail-tags').innerHTML = (p.tags||[]).map(t=>`<span class="tag dark">${t}</span>`).join('');
-        if (p.image) document.getElementById('detail-img').src = p.image;
-        if (p.imageCaption) document.getElementById('detail-caption').textContent = p.imageCaption;
-        if (p.sections) renderSections(p.sections);
-      })
-      .catch(() => {});
-  </script>
+fetch('./data.json?t=' + Date.now())
+  .then(r => r.ok ? r.json() : null)
+  .then(d => {
+    if (!d) return;
+    if (d.site?.name) document.getElementById('nav-logo').textContent = d.site.name;
+    if (d.site?.heroName) document.getElementById('footer-text').textContent = '© 2025 ' + d.site.heroName + ' — Science Content Planner';
+    const p = (d.projects || [])[0]; if (!p) return;
+    document.getElementById('detail-cat').textContent = p.category || '';
+    document.getElementById('detail-title').textContent = p.title || '';
+    document.getElementById('detail-summary').textContent = p.summary || '';
+    document.getElementById('detail-tags').innerHTML = (p.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+    if (p.image) document.getElementById('detail-img').src = p.image;
+    if (p.imageCaption) document.getElementById('detail-caption').textContent = p.imageCaption;
+    if (p.sections) renderSections(p.sections);
+  }).catch(() => {});
+</script>
 </body>
 </html>

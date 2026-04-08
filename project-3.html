@@ -5,101 +5,147 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>디지털화 기획 경진대회 대상 — 양승우</title>
   <link rel="stylesheet" href="./style.css" />
+  <style>
+    .detail-hero-blob { background: var(--amber); }
+    .detail-cat-badge { background: rgba(245,158,11,.15); color: var(--amber); border-color: rgba(245,158,11,.25); }
+    .detail-title { background: linear-gradient(135deg,#fff 40%,#fde68a 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .detail-section-heading { background: var(--g-warm); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .detail-section ul li::before { background: var(--amber); }
+    .detail-subsection { border-color: rgba(245,158,11,.25); }
+  </style>
 </head>
 <body class="detail-page">
-  <div id="progress-bar"></div>
-  <nav>
-    <a class="logo" href="./index.html" id="nav-logo">YANG.</a>
-    <ul>
-      <li><a href="./index.html#projects">Projects</a></li>
-      <li><a href="./index.html#contact">Contact</a></li>
-    </ul>
-  </nav>
+<div id="progress-bar"></div>
 
-  <section class="detail-hero">
-    <div class="detail-hero-inner">
-      <a class="detail-back" href="./index.html">Projects로 돌아가기</a>
-      <p class="detail-cat" id="detail-cat">수상 / 기획</p>
-      <h1 class="detail-title" id="detail-title">디지털화 기획 경진대회 대상</h1>
-      <p class="detail-summary" id="detail-summary">사내 출판의 디지털화를 도모하기 위한 구독형 서비스 및 메타버스 플랫폼 기획안 발표</p>
-      <div class="detail-tags tags" id="detail-tags">
-        <span class="tag dark">기획</span><span class="tag dark">메타버스</span>
-        <span class="tag dark">구독 서비스</span><span class="tag dark">디지털화</span><span class="tag dark">수상</span>
+<nav id="nav">
+  <a class="logo" href="./index.html" id="nav-logo">YANG.</a>
+  <ul>
+    <li><a href="./index.html#projects">Projects</a></li>
+    <li><a href="./index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="detail-hero">
+  <div class="detail-hero-blob"></div>
+  <div class="detail-hero-inner">
+    <a class="detail-back" href="./index.html">← Projects로 돌아가기</a>
+    <p class="detail-cat-badge" id="detail-cat">수상 / 기획</p>
+    <h1 class="detail-title" id="detail-title">디지털화 기획 경진대회 대상</h1>
+    <p class="detail-summary" id="detail-summary">사내 출판의 디지털화를 도모하기 위한 구독형 서비스 및 메타버스 플랫폼 기획안 발표</p>
+    <div class="detail-tags" id="detail-tags">
+      <span class="tag">기획</span><span class="tag">메타버스</span>
+      <span class="tag">구독형 서비스</span><span class="tag">수상</span>
+    </div>
+  </div>
+</section>
+
+<section class="detail-image-section">
+  <div class="detail-image-inner reveal">
+    <img id="detail-img" src="./images/competition.jpg" alt="디지털화 기획 경진대회 대상" />
+    <p class="detail-image-caption" id="detail-caption">비상교육 디지털화 기획 경진대회 대상 수상</p>
+  </div>
+</section>
+
+<section class="detail-body">
+  <div class="detail-body-inner" id="detail-sections">
+    <div class="detail-section reveal">
+      <p class="detail-section-heading">프로젝트 개요</p>
+      <ul>
+        <li>비상교육 사내 디지털화 기획 경진대회 (2021)</li>
+        <li>구독형 과학 콘텐츠 서비스 및 메타버스 플랫폼 기획</li>
+        <li>대상 수상</li>
+      </ul>
+    </div>
+    <div class="detail-section reveal" style="transition-delay:.05s">
+      <p class="detail-section-heading">핵심 기획</p>
+      <div class="detail-subsection">
+        <p class="detail-subsection-title">1. 구독형 서비스 모델 설계</p>
+        <ul><li>기존 단권 판매 방식에서 구독 모델로 전환</li><li>콘텐츠 번들링 전략 및 수익 구조 설계</li></ul>
+      </div>
+      <div class="detail-subsection">
+        <p class="detail-subsection-title">2. 메타버스 플랫폼 기획</p>
+        <ul><li>학습자가 몰입하는 가상 과학 실험 공간 설계</li><li>교사-학생 상호작용 시스템 기획</li></ul>
+      </div>
+      <div class="detail-subsection">
+        <p class="detail-subsection-title">3. 발표 및 설득 전략</p>
+        <ul><li>시장 조사 기반 논거 구성</li><li>시각 자료 중심 발표 기획</li></ul>
       </div>
     </div>
-  </section>
-
-  <section class="detail-image-section">
-    <div class="detail-image-inner">
-      <img id="detail-img" src="./images/competition.jpg" alt="대표 이미지" />
-      <p class="detail-image-caption" id="detail-caption">2021 출판의 디지털화 기획 경진대회 대상 시상식</p>
+    <div class="detail-section reveal" style="transition-delay:.1s">
+      <p class="detail-section-heading">나의 역할</p>
+      <ul>
+        <li>기획안 전체 구성 및 작성</li>
+        <li>서비스 모델 및 수익 구조 설계</li>
+        <li>발표 자료 기획 및 발표</li>
+      </ul>
     </div>
-  </section>
-
-  <section class="detail-body">
-    <div class="detail-body-inner" id="detail-sections">
-      <div class="detail-section">
-        <p class="detail-section-heading">수상 정보</p>
-        <ul><li>수상: 2021 출판의 디지털화 기획안 경진대회 대상 (비상교육)</li><li>연도: 2021년</li></ul>
-      </div>
-      <div class="detail-section">
-        <p class="detail-section-heading">기획 내용</p>
-        <div class="detail-subsection"><p class="detail-subsection-title">구독형 서비스 기획</p><ul><li>기존 콘텐츠 자산을 활용한 구독 모델 설계</li><li>사용자 세그먼트별 콘텐츠 큐레이션 전략</li></ul></div>
-        <div class="detail-subsection"><p class="detail-subsection-title">메타버스 공유 플랫폼</p><ul><li>과학 실험·탐구 활동을 가상공간에서 구현</li><li>교사·학생 간 콘텐츠 공유 및 협업 플랫폼 구축</li></ul></div>
-      </div>
-      <div class="detail-section">
-        <p class="detail-section-heading">의의</p>
-        <ul><li>단순 교재 개발에서 플랫폼 기획으로 역량 확장</li><li>디지털 전환 시대의 출판 비즈니스 모델 제시</li></ul>
-      </div>
+    <div class="detail-section reveal" style="transition-delay:.15s">
+      <p class="detail-section-heading">핵심 역량</p>
+      <ul>
+        <li>비즈니스 모델 기획</li>
+        <li>서비스 기획 및 전략 수립</li>
+        <li>설득형 커뮤니케이션</li>
+      </ul>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer><p id="footer-text">© 2025 양승우 — Science Content Planner</p></footer>
+<footer>
+  <p id="footer-text">© 2025 양승우 — Science Content Planner</p>
+  <a href="./admin.html" class="footer-admin-link">관리자</a>
+</footer>
 
-  <script>
-    const bar = document.getElementById('progress-bar');
-    window.addEventListener('scroll', () => {
-      const total = document.documentElement.scrollHeight - window.innerHeight;
-      bar.style.transform = `scaleX(${window.scrollY / total})`;
-    });
+<script>
+const bar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  if (total > 0) bar.style.transform = `scaleX(${Math.min(window.scrollY / total, 1)})`;
+});
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), { passive: true });
 
-    function renderSections(sections) {
-      const container = document.getElementById('detail-sections');
-      container.innerHTML = sections.map(sec => {
-        if (sec.subSections && sec.subSections.length) {
-          return `<div class="detail-section">
-            <p class="detail-section-heading">${sec.heading}</p>
-            ${sec.subSections.map(sub => `
-              <div class="detail-subsection">
-                <p class="detail-subsection-title">${sub.title}</p>
-                <ul>${(sub.items||[]).map(i=>`<li>${i}</li>`).join('')}</ul>
-              </div>`).join('')}
-          </div>`;
-        }
-        return `<div class="detail-section">
-          <p class="detail-section-heading">${sec.heading}</p>
-          <ul>${(sec.items||[]).map(i=>`<li>${i}</li>`).join('')}</ul>
-        </div>`;
-      }).join('');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+function renderSections(sections) {
+  const container = document.getElementById('detail-sections');
+  container.innerHTML = sections.map((sec, i) => {
+    const delay = (i * 0.05).toFixed(2);
+    if (sec.subSections && sec.subSections.length) {
+      return `<div class="detail-section reveal" style="transition-delay:${delay}s">
+        <p class="detail-section-heading">${sec.heading}</p>
+        ${sec.subSections.map(sub => `
+          <div class="detail-subsection">
+            <p class="detail-subsection-title">${sub.title}</p>
+            <ul>${(sub.items||[]).map(it=>`<li>${it}</li>`).join('')}</ul>
+          </div>`).join('')}
+      </div>`;
     }
+    return `<div class="detail-section reveal" style="transition-delay:${delay}s">
+      <p class="detail-section-heading">${sec.heading}</p>
+      <ul>${(sec.items||[]).map(it=>`<li>${it}</li>`).join('')}</ul>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+}
 
-    fetch('./data.json?t=' + Date.now())
-      .then(r => r.ok ? r.json() : null)
-      .then(d => {
-        if (!d) return;
-        if (d.site?.name) document.getElementById('nav-logo').textContent = d.site.name;
-        if (d.site?.heroName) document.getElementById('footer-text').textContent = '© 2025 ' + d.site.heroName + ' — Science Content Planner';
-        const p = (d.projects || [])[2];
-        if (!p) return;
-        document.getElementById('detail-cat').textContent = p.category || '';
-        document.getElementById('detail-title').textContent = p.title || '';
-        document.getElementById('detail-summary').textContent = p.summary || '';
-        document.getElementById('detail-tags').innerHTML = (p.tags||[]).map(t=>`<span class="tag dark">${t}</span>`).join('');
-        if (p.image) document.getElementById('detail-img').src = p.image;
-        if (p.imageCaption) document.getElementById('detail-caption').textContent = p.imageCaption;
-        if (p.sections) renderSections(p.sections);
-      })
-      .catch(() => {});
-  </script>
+fetch('./data.json?t=' + Date.now())
+  .then(r => r.ok ? r.json() : null)
+  .then(d => {
+    if (!d) return;
+    if (d.site?.name) document.getElementById('nav-logo').textContent = d.site.name;
+    if (d.site?.heroName) document.getElementById('footer-text').textContent = '© 2025 ' + d.site.heroName + ' — Science Content Planner';
+    const p = (d.projects || [])[2]; if (!p) return;
+    document.getElementById('detail-cat').textContent = p.category || '';
+    document.getElementById('detail-title').textContent = p.title || '';
+    document.getElementById('detail-summary').textContent = p.summary || '';
+    document.getElementById('detail-tags').innerHTML = (p.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+    if (p.image) document.getElementById('detail-img').src = p.image;
+    if (p.imageCaption) document.getElementById('detail-caption').textContent = p.imageCaption;
+    if (p.sections) renderSections(p.sections);
+  }).catch(() => {});
+</script>
 </body>
 </html>
