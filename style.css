@@ -342,6 +342,17 @@ footer {
   border-top: 1px solid var(--border-inv);
 }
 
+.footer-admin-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.15);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  transition: color .2s;
+}
+.footer-admin-link:hover { color: rgba(255,255,255,0.5); }
+
 /* ── Project Detail Page ── */
 .detail-page {
   padding-top: 64px;
